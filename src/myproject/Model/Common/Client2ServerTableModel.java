@@ -22,7 +22,8 @@ public class Client2ServerTableModel extends AbstractTableModel<Client2Server>  
     public Object[] createColumns() {
         return new Object[]{
             "ID",
-            "IP"
+            "IP",
+            "Hostname"
         };
     }
 
@@ -30,7 +31,8 @@ public class Client2ServerTableModel extends AbstractTableModel<Client2Server>  
     public Object[] createRow(Client2Server row) {
          return new Object[]{
             row.getClientID(),
-            row.getClientIP()
+            row.getClientIP(),
+            row.getClientHostName()
          };
     }
 }

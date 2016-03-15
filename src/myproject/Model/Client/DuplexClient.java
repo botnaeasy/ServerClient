@@ -10,7 +10,6 @@ import myproject.Model.Exception.ServerLogoutException;
 import myproject.Model.Informator.Log;
 import myproject.Model.Message.AbstractMessage;
 import myproject.Model.Message.Client2ServerMessages.FillClientInfoMessage;
-import myproject.Model.Message.InfoClientMessage;
 import myproject.View.Client.ClientPanel;
 
 /**
@@ -105,7 +104,8 @@ public class DuplexClient extends AbstractClient {
     
     private AbstractMessage createInfoMessage(){
         AbstractMessage message =  new FillClientInfoMessage(new String[][]{
-            {getClientIP()}
+            { getClientIP()},
+            {getHostName()}
         });
         return message;
     }

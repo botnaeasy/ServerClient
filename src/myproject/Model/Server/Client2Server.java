@@ -16,7 +16,6 @@ import java.util.Random;
 import myproject.Model.Exception.ClientLogoutException;
 import myproject.Model.Message.AbstractMessage;
 import myproject.Model.Message.Client2ServerMessages.AbstractC2SMessage;
-import myproject.Model.Message.InfoClientMessage;
 import myproject.Model.Message.CommonMessages.StopClientMessage;
 import myproject.View.Server.ServerPanel;
 
@@ -34,6 +33,7 @@ public class Client2Server{
         private ObjectOutputStream outMessage;
         private int clientID;
         private String clientIP;
+        private String clientHostName;
         
         private boolean isReception = true;
         private boolean isSending = true;
@@ -80,7 +80,6 @@ public class Client2Server{
             try{
                 AbstractMessage message = (AbstractMessage) inMessage.readObject();
                 System.out.println("Serwer odebrał ("+getClientID()+"): "+ message.toString());
-                //checkInfoMessage(message);
                 checkClient2ServerMessage(message);
                 panelMethod(message);
             }catch(Exception e){
@@ -97,53 +96,48 @@ public class Client2Server{
         private void executeC2SMessage(AbstractC2SMessage message){
             message.executeOnC2S(this);
         }
-        
-        private void checkInfoMessage(AbstractMessage message){
-            if(message instanceof InfoClientMessage){
-                InfoClientMessage icl = (InfoClientMessage) message;
-                setInfo(icl);
-            }
-        }
-        
-        private void setInfo(InfoClientMessage message){
-            setClientIP(message.getIP());
+
+        public int getClientID() {
+            return clientID;
         }
 
-    public int getClientID() {
-        return clientID;
+        private void panelMethod(AbstractMessage message){
+            if(panel==null)
+                return;
+
+            panel.updateForMessage(message.toString());
+        }
+
+        public String getClientIP() {
+            return clientIP;
+        }
+
+        public void setClientIP(String clientIP) {
+            this.clientIP = clientIP;
+        }
+
+        public boolean isIsReception() {
+            return isReception;
+        }
+
+        public void setIsReception(boolean isReception) {
+            this.isReception = isReception;
+        }
+
+        public boolean isIsSending() {
+            return isSending;
+        }
+
+        public void setIsSending(boolean isSending) {
+            this.isSending = isSending;
+        }
+
+    public String getClientHostName() {
+        return clientHostName;
     }
-    
-    private void panelMethod(AbstractMessage message){
-        if(panel==null)
-            return;
+
+    public void setClientHostName(String clientHostName) {
+        this.clientHostName = clientHostName;
+    }
         
-        panel.updateForMessage(message.toString());
-    }
-
-    public String getClientIP() {
-        return clientIP;
-    }
-
-    public void setClientIP(String clientIP) {
-        this.clientIP = clientIP;
-    }
-
-    public boolean isIsReception() {
-        return isReception;
-    }
-
-    public void setIsReception(boolean isReception) {
-        this.isReception = isReception;
-    }
-
-    public boolean isIsSending() {
-        return isSending;
-    }
-
-    public void setIsSending(boolean isSending) {
-        this.isSending = isSending;
-    }
-    
-    
-    
 }

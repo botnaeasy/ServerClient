@@ -7,7 +7,6 @@ package myproject.View.Server;
 
 import java.io.IOException;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import myproject.Model.Common.Client2ServerTableModel;
 import myproject.Model.Common.ExtendedJTable;
 import myproject.Model.Server.MultiThreadServer;

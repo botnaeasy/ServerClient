@@ -42,13 +42,31 @@ public abstract class AbstractClient implements Serializable {
     protected boolean isConnected;
     protected int clientID;
     protected String clientIP;
+    protected String hostName;
     
     protected Log logger;
     
     public AbstractClient(){
         this.client = this;
         isConnected = false;
-        setIP();
+        setFullClientInfo();
+    }
+    
+    private void setFullClientInfo(){
+        try {
+            setHostName();
+            setIP();
+        } catch (UnknownHostException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    private void setHostName() throws UnknownHostException{
+            this.hostName = InetAddress.getLocalHost().getHostName();
+    }
+    
+        private void setIP() throws UnknownHostException{
+            this.clientIP = InetAddress.getLocalHost().getHostAddress();
     }
     
     public void setServer(String host, int port){
@@ -85,7 +103,6 @@ public abstract class AbstractClient implements Serializable {
     public void tryToConnect(){
         startLogging();
         newConnectThread();
-        //setIp();
     }
     
     private void startLogging(){
@@ -128,13 +145,7 @@ public abstract class AbstractClient implements Serializable {
         startRecepting();
     }
     
-    private void setIP(){
-        try {
-            this.clientIP = InetAddress.getLocalHost().getHostAddress();
-        } catch (UnknownHostException ex) {
-            ex.printStackTrace();
-        }
-    }
+
     
     private void softDisconnect() throws IOException{
         isConnected = false;
@@ -207,5 +218,8 @@ public abstract class AbstractClient implements Serializable {
     public String getClientIP() {
         return clientIP;
     }
- 
+
+    public String getHostName() {
+        return hostName;
+    }
 }

@@ -22,7 +22,8 @@ public class FillClientInfoMessage extends AbstractC2SMessage{
     @Override
     public String[] setMethod() {
         return new String[]{
-            "setClientIP"
+            "setClientIP",
+            "setClientHostName"
         };
     }
 
@@ -34,7 +35,8 @@ public class FillClientInfoMessage extends AbstractC2SMessage{
     @Override
     public Class[][] setClassArguments() {
         return new Class[][]{
-            {String.class}  
+            {String.class},
+            {String.class}
         };
     }
     
