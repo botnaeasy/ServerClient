@@ -27,23 +27,26 @@ import myproject.Model.Message.CommonMessages.TextMessage;
 public abstract class AbstractClient implements Serializable {
     
     public static final int SLEEP_TIME = 5000;
-    
+    ///server info
     protected int PORT = 6000;
     protected String HOST = "83.30.127.135";
     protected Socket socket;
-    
+    ///streams
     protected BufferedReader socketReader;
     protected PrintWriter socketWriter;
     protected ObjectOutputStream outMessage;
     protected ObjectInputStream inMessage;
-    
+    /////
     protected AbstractClient client;
-    
+    ///client ino
     protected boolean isConnected;
     protected int clientID;
     protected String clientIP;
     protected String hostName;
-    
+    protected String clientOS;
+    protected String javaVersion;
+    protected String clientLanguage;
+    /////logger
     protected Log logger;
     
     public AbstractClient(){
@@ -56,9 +59,24 @@ public abstract class AbstractClient implements Serializable {
         try {
             setHostName();
             setIP();
+            setOS();
+            setJavaVersion();
+            setClientLanguage();
         } catch (UnknownHostException ex) {
             ex.printStackTrace();
         }
+    }
+    
+    private void setClientLanguage(){
+        setClientLanguage(System.getProperty("user.language")+"- "+System.getProperty("user.country"));
+    }
+    
+    private void setJavaVersion(){
+        setJavaVersion(System.getProperty("java.version"));
+    }
+    
+    private void setOS(){
+        setClientOS(System.getProperty("os.name"));
     }
     
     private void setHostName() throws UnknownHostException{
@@ -222,4 +240,31 @@ public abstract class AbstractClient implements Serializable {
     public String getHostName() {
         return hostName;
     }
+
+    public String getClientOS() {
+        return clientOS;
+    }
+
+    public void setClientOS(String clientOS) {
+        this.clientOS = clientOS;
+    }
+
+    public String getJavaVersion() {
+        return javaVersion;
+    }
+
+    public void setJavaVersion(String javaVersion) {
+        this.javaVersion = javaVersion;
+    }
+
+    public String getClientLanguage() {
+        return clientLanguage;
+    }
+
+    public void setClientLanguage(String clientLanguage) {
+        this.clientLanguage = clientLanguage;
+    }
+    
+    
+    
 }

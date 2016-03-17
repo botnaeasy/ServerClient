@@ -34,6 +34,9 @@ public class Client2Server{
         private int clientID;
         private String clientIP;
         private String clientHostName;
+        private String clientOS;
+        private String clientLanguage;
+        private String javaVersion;
         
         private boolean isReception = true;
         private boolean isSending = true;
@@ -139,5 +142,30 @@ public class Client2Server{
     public void setClientHostName(String clientHostName) {
         this.clientHostName = clientHostName;
     }
-        
+
+    public String getClientOS() {
+        return clientOS;
+    }
+
+    public void setClientOS(String clientOS) {
+        this.clientOS = clientOS;
+    }
+
+    public String getClientLanguage() {
+        return clientLanguage;
+    }
+
+    public void setClientLanguage(String clientLanguage) {
+        this.clientLanguage = clientLanguage;
+    }
+
+    public String getJavaVersion() {
+        return javaVersion;
+    }
+
+    public void setJavaVersion(String javaVersion) {
+        this.javaVersion = javaVersion;
+    }
+    
+    
 }

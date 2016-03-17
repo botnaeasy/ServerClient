@@ -23,7 +23,10 @@ public class Client2ServerTableModel extends AbstractTableModel<Client2Server>  
         return new Object[]{
             "ID",
             "IP",
-            "Hostname"
+            "Hostname",
+            "OS",
+            "Language",
+            "Java version"
         };
     }
 
@@ -32,7 +35,10 @@ public class Client2ServerTableModel extends AbstractTableModel<Client2Server>  
          return new Object[]{
             row.getClientID(),
             row.getClientIP(),
-            row.getClientHostName()
+            row.getClientHostName(),
+            row.getClientOS(),
+            row.getClientLanguage(),
+            row.getJavaVersion()
          };
     }
 }

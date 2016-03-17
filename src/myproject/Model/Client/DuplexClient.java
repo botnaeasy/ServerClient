@@ -104,8 +104,11 @@ public class DuplexClient extends AbstractClient {
     
     private AbstractMessage createInfoMessage(){
         AbstractMessage message =  new FillClientInfoMessage(new String[][]{
-            { getClientIP()},
-            {getHostName()}
+            {getClientIP()},
+            {getHostName()},
+            {getClientOS()},
+            {getClientLanguage()},
+            {getJavaVersion()}
         });
         return message;
     }
