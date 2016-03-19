@@ -6,7 +6,9 @@
 package myproject.View.Common;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.beans.PropertyVetoException;
+import java.util.List;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
@@ -50,7 +52,21 @@ public class UniversalMainFrame extends javax.swing.JFrame {
     
     public static void showInInternalFrame(String frameTitle, JPanel panel, boolean isCloseable){
         JInternalFrame frame = createFrame(frameTitle, panel, isCloseable);
-        main.getDesktop().add(frame);
+        if(!checkIsEnabled(frame)){
+            main.getDesktop().add(frame);
+            frame.toFront();
+        }
+    }
+    
+    private static boolean checkIsEnabled(JInternalFrame frame){
+         Component[] comps = main.getDesktop().getComponents();
+         for(int i=0;i<comps.length;i++){
+             if(((JInternalFrame)comps[i]).getTitle().equals(frame.getTitle())){
+                 ((JInternalFrame)comps[i]).toFront();
+                 return true;
+             }
+         }
+         return false;
     }
     
     private static JInternalFrame createFrame(String title, JPanel panel, boolean isCloseable){
@@ -98,6 +114,7 @@ public class UniversalMainFrame extends javax.swing.JFrame {
                UniversalMainFrame mainFrame= new UniversalMainFrame();
                mainFrame.initPanel(args[0]);
                mainFrame.setVisible(true);
+               mainFrame.pack();
             }
         });
     }

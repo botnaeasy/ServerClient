@@ -11,6 +11,8 @@ import myproject.Model.Common.TableModels.Client2ServerTableModel;
 import myproject.Model.Common.ExtendedComponents.ExtendedJTable;
 import myproject.Model.Common.ProcessExecutor;
 import myproject.Model.Server.MultiThreadServer;
+import myproject.View.Common.FileManagerPanel;
+import myproject.View.Common.UniversalMainFrame;
 
 /**
  *
@@ -101,13 +103,9 @@ public class ServerPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void testButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testButtonActionPerformed
-        try {
             //clientsTable.getSelectedObjects();
             //UniversalMainFrame.main.showInInternalFrame("test");
-            System.out.println(ProcessExecutor.execute("cmd"));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+            UniversalMainFrame.main.showInInternalFrame("File manager", new FileManagerPanel(), true);
     }//GEN-LAST:event_testButtonActionPerformed
 
 
