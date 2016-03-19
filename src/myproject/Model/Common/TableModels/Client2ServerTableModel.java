@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package myproject.Model.Common;
+package myproject.Model.Common.TableModels;
 
+import myproject.Model.Common.TableModels.AbstractTableModel;
 import java.util.List;
 import myproject.Model.Server.Client2Server;
 

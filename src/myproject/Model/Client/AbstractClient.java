@@ -16,7 +16,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import myproject.Model.Exception.ServerLogoutException;
-import myproject.Model.Informator.Log;
+import myproject.Model.Logger.Log;
 import myproject.Model.Message.AbstractMessage;
 import myproject.Model.Message.CommonMessages.TextMessage;
 

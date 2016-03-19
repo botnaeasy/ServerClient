@@ -7,8 +7,9 @@ package myproject.View.Server;
 
 import java.io.IOException;
 import javax.swing.JScrollPane;
-import myproject.Model.Common.Client2ServerTableModel;
-import myproject.Model.Common.ExtendedJTable;
+import myproject.Model.Common.TableModels.Client2ServerTableModel;
+import myproject.Model.Common.ExtendedComponents.ExtendedJTable;
+import myproject.Model.Common.ProcessExecutor;
 import myproject.Model.Server.MultiThreadServer;
 
 /**
@@ -100,7 +101,13 @@ public class ServerPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void testButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testButtonActionPerformed
-        clientsTable.getSelectedObjects();
+        try {
+            //clientsTable.getSelectedObjects();
+            //UniversalMainFrame.main.showInInternalFrame("test");
+            System.out.println(ProcessExecutor.execute("cmd"));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }//GEN-LAST:event_testButtonActionPerformed
 
 

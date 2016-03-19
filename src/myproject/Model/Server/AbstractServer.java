@@ -7,7 +7,7 @@ package myproject.Model.Server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import myproject.Model.Informator.Log;
+import myproject.Model.Logger.Log;
 import myproject.Model.Message.AbstractMessage;
 
 /**

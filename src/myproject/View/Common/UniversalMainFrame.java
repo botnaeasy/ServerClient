@@ -5,7 +5,12 @@
  */
 package myproject.View.Common;
 
+import java.awt.BorderLayout;
+import java.beans.PropertyVetoException;
+import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import myproject.View.Client.ClientPanel;
 import myproject.View.Server.ServerPanel;
 
@@ -16,21 +21,48 @@ import myproject.View.Server.ServerPanel;
 public class UniversalMainFrame extends javax.swing.JFrame {
     
     public static UniversalMainFrame main;
-
+    private static JDesktopPane desktop;
     /**
      * Creates new form UniversalFrame
      */
     public UniversalMainFrame() {
         initComponents();
         main = this;
+        desktop = new JDesktopPane();
+        main.setContentPane(main.getDesktop());
     }
     private void initPanel(String arg){
         this.setTitle(arg);
+        
         if(arg.equals("server")){
-            mainPanel.add(new ServerPanel());
+            //mainPanel.add(new ServerPanel());
+            showInInternalFrame("Server", new ServerPanel(), false);
+            //showInInternalFrame("Client", new ClientPanel());
         }else if(arg.equals("client")){
-            mainPanel.add(new ClientPanel());
+            //mainPanel.add(new ClientPanel());
+            showInInternalFrame("Client", new ClientPanel(), false);
         }
+    }
+    
+    private static JDesktopPane getDesktop(){
+        return desktop;
+    }
+    
+    public static void showInInternalFrame(String frameTitle, JPanel panel, boolean isCloseable){
+        JInternalFrame frame = createFrame(frameTitle, panel, isCloseable);
+        main.getDesktop().add(frame);
+    }
+    
+    private static JInternalFrame createFrame(String title, JPanel panel, boolean isCloseable){
+        JInternalFrame frame = new JInternalFrame(title);
+        frame.add(panel);
+        frame.setResizable(true);
+        frame.setClosable(isCloseable);
+        frame.setMaximizable(true);
+        //frame.setIconifiable(true);
+        frame.setVisible(true);
+        frame.pack();
+        return frame;
     }
     
     public static void showErrorDialog(String message){
@@ -69,7 +101,6 @@ public class UniversalMainFrame extends javax.swing.JFrame {
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel mainPanel;
     // End of variables declaration//GEN-END:variables

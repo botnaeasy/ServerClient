@@ -7,7 +7,7 @@ package myproject.Model.Message.Client2ServerMessages;
 
 import java.lang.reflect.Method;
 import myproject.Model.Client.AbstractClient;
-import myproject.Model.Informator.Log;
+import myproject.Model.Logger.Log;
 import myproject.Model.Message.AbstractMessage;
 import myproject.Model.Server.Client2Server;
 

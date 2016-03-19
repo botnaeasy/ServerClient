@@ -8,7 +8,7 @@ package myproject.Model.Message.ReverseMessages;
 import java.lang.reflect.Method;
 import java.util.List;
 import myproject.Model.Client.AbstractClient;
-import myproject.Model.Informator.Log;
+import myproject.Model.Logger.Log;
 import myproject.Model.Message.AbstractMessage;
 
 /**

@@ -3,32 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package myproject.View.Client;
-
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import myproject.Model.Common.ExtendedJTable;
+package myproject.View.Common;
 
 /**
  *
  * @author BotNaEasyEnv
  */
-public class TestPanel extends javax.swing.JPanel {
+public class UniversalInternalFrame extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form TestPanel
+     * Creates new form CommonInternalFrame
      */
-    public TestPanel() {
+    public UniversalInternalFrame() {
         initComponents();
-        //add(new ExtendedJTable().showTable());
-        List<Object> list = new ArrayList<>();
-        list.add("e");
-        list.add("321");
-        //JTable table = new JTable(new Object[][]{{"wiersz"},{"wiersz2"}}, new Object[]{"kolumna"});
-        JTable table = new JTable();
-        add(new JScrollPane(table));
     }
 
     /**
@@ -40,10 +27,16 @@ public class TestPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setLayout(new java.awt.BorderLayout());
+        inPanel = new javax.swing.JPanel();
+
+        inPanel.setLayout(new java.awt.BorderLayout());
+        getContentPane().add(inPanel, java.awt.BorderLayout.CENTER);
+
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel inPanel;
     // End of variables declaration//GEN-END:variables
 }

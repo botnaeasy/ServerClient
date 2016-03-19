@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package myproject.Model.Informator;
+package myproject.Model.Logger;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -27,6 +27,10 @@ public class Log<T> {
     
     public Log(T instanceOfClass){
         this.instanceOfClass = instanceOfClass;
+    }
+    
+    public static void errorLog(Object message, Object cause){
+        System.err.println("Error log: "+message+" \ncause: "+cause);
     }
     
     public static void log(Object message){

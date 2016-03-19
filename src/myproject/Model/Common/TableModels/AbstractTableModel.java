@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package myproject.Model.Common;
+package myproject.Model.Common.TableModels;
 
 import java.util.List;
 import javax.swing.event.TableModelListener;

@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import myproject.Model.Informator.Log;
+import myproject.Model.Logger.Log;
 import myproject.Model.Message.AbstractMessage;
 import myproject.Model.Message.CommonMessages.SetIdClientMessage;
 import myproject.Model.Message.CommonMessages.TextMessage;

@@ -7,7 +7,7 @@ package myproject.Model.Client;
 
 import java.io.IOException;
 import myproject.Model.Exception.ServerLogoutException;
-import myproject.Model.Informator.Log;
+import myproject.Model.Logger.Log;
 import myproject.Model.Message.AbstractMessage;
 import myproject.Model.Message.Client2ServerMessages.FillClientInfoMessage;
 import myproject.View.Client.ClientPanel;
