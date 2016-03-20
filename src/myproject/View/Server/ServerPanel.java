@@ -105,7 +105,7 @@ public class ServerPanel extends javax.swing.JPanel {
     private void testButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testButtonActionPerformed
             //clientsTable.getSelectedObjects();
             //UniversalMainFrame.main.showInInternalFrame("test");
-            UniversalMainFrame.main.showInInternalFrame("File manager", new FileManagerPanel(), true);
+            UniversalMainFrame.main.showInInternalFrame("File manager", new FileManagerPanel(clientsTable.getSelectedObject()), true);
     }//GEN-LAST:event_testButtonActionPerformed
 
 

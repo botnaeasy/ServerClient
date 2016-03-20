@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package myproject.Model.Common.TreeModels;
+package myproject.Model.Common.FileManager.TreeModels;
 
 import java.io.File;
 import javax.swing.event.TreeModelListener;

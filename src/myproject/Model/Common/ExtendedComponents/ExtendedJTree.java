@@ -6,12 +6,16 @@
 package myproject.Model.Common.ExtendedComponents;
 
 import javax.swing.JTree;
+import javax.swing.tree.TreeNode;
+import myproject.Model.Common.FileManager.TreeModels.FileTreeNode;
 
 /**
  *
  * @author BotNaEasyEnv
  */
 public class ExtendedJTree extends JTree {
-    
-    
+
+    public ExtendedJTree(TreeNode root) {
+        super(root);
+    }
 }
