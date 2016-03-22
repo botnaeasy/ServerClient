@@ -5,6 +5,8 @@
  */
 package myproject.View.Common;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JScrollPane;
@@ -28,8 +30,7 @@ public class FileManagerPanel extends javax.swing.JPanel {
     /**
      * Creates new form FileManagerPanel
      */
-    private JTree tree;
-    //private TreeModel treeModel;
+    private ExtendedJTree tree;
     private Client2ServerFileManager manager;
     
     public FileManagerPanel(Client2Server c2s) {
@@ -39,10 +40,8 @@ public class FileManagerPanel extends javax.swing.JPanel {
     }
     
     private void initialize(Client2Server c2s){
-        manager = new Client2ServerFileManager(c2s);
-        tree = new ExtendedJTree(manager.getRootNode());
-         //treeModel = new FileTreeModel("C:\\");
-         //tree.setModel(treeModel);
+         manager = new Client2ServerFileManager(c2s);
+         tree = new ExtendedJTree(manager.getRoot());
          treePanel.add(new JScrollPane(tree));
     }
     
@@ -50,9 +49,9 @@ public class FileManagerPanel extends javax.swing.JPanel {
         tree.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent me) {
-                if(me.getClickCount()>2){
-                    UniversalMainFrame.showErrorDialog(tree.getSelectionPath().toString());
-                    manager.addNode((TreeNode) tree.getSelectionPath().getLastPathComponent(), "test");
+                if(me.getClickCount()>=2){
+                    //tree.updateUI();
+                    manager.sendFilesInfoRequest((FileTreeNode) tree.getSelectedNode());
                 }
             }
 

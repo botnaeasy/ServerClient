@@ -6,13 +6,17 @@
 package myproject.Model.Server;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.List;
 import java.util.Random;
+import javax.swing.tree.TreeNode;
+import myproject.Model.Common.FileManager.TreeModels.FileTreeNode;
 import myproject.Model.Exception.ClientLogoutException;
 import myproject.Model.Message.AbstractMessage;
 import myproject.Model.Message.Client2ServerMessages.AbstractC2SMessage;
@@ -40,6 +44,8 @@ public class Client2Server{
         
         private boolean isReception = true;
         private boolean isSending = true;
+        
+        private FileTreeNode clientFiles;
         
         private ServerPanel panel; 
         
@@ -73,6 +79,14 @@ public class Client2Server{
             outMessage.flush();
         }
         
+        
+        public void addRootChilds(Object[] files){
+            File[] ff = new File[files.length];
+            for(int i=0;i<files.length;i++){
+                ff[i] = (File) files[i];
+            }
+            clientFiles.addNodes(ff);
+        }
         
         public void sendCloseClientMessage() throws IOException{
              sendMessage(new StopClientMessage());
@@ -166,6 +180,12 @@ public class Client2Server{
     public void setJavaVersion(String javaVersion) {
         this.javaVersion = javaVersion;
     }
-    
-    
+
+    public FileTreeNode getClientFiles() {
+        return clientFiles;
+    }
+
+    public void setClientFiles(FileTreeNode clientFiles) {
+        this.clientFiles = clientFiles;
+    }
 }

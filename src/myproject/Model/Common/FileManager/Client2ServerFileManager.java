@@ -5,8 +5,11 @@
  */
 package myproject.Model.Common.FileManager;
 
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
+import myproject.Model.Common.FileManager.TreeModels.FileTreeNode;
+import myproject.Model.Logger.Log;
+import myproject.Model.Message.AbstractMessage;
+import myproject.Model.Message.CommonMessages.RequestDiscInfoMessage;
 import myproject.Model.Server.Client2Server;
 
 /**
@@ -16,22 +19,47 @@ import myproject.Model.Server.Client2Server;
 public class Client2ServerFileManager<T extends Client2Server> {
     
     private T c2s;
-    private TreeNode root;
     
     public Client2ServerFileManager(T c2s){
         this.c2s = c2s;
-        setRoot();
     }
     
-    public void setRoot(){
-        root = new DefaultMutableTreeNode(c2s.getClientHostName());
+
+    public TreeNode getRoot(){
+        if(c2s.getClientFiles()==null){
+            c2s.setClientFiles(new FileTreeNode(c2s.getClientHostName()));
+            sendDiscsInfoRequest();
+        }
+        return c2s.getClientFiles();
     }
     
-    public TreeNode getRootNode(){
-        return root;
+    private void sendDiscsInfoRequest(){
+        try {
+            AbstractMessage message = new RequestDiscInfoMessage();
+         c2s.sendMessage(message);
+        } catch (Exception e) {
+            Log.errorLog(e.getMessage(), e);
+        }
     }
     
-    public void addNode(TreeNode tn, String add){
-        ((DefaultMutableTreeNode) tn).add(new DefaultMutableTreeNode(add));
+    public void sendFilesInfoRequest(FileTreeNode node){
+        if(node.getChildCount()>0){
+            return;
+        }
+        if(node.getValue().isFile()){
+            downloadFileRequest();
+        }else{
+            filesInfoRequest();
+        }
     }
+    
+    private void filesInfoRequest(){
+        
+    }
+    
+    private void downloadFileRequest(){
+        
+    }
+    
+    
 }

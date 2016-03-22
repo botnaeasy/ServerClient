@@ -5,23 +5,37 @@
  */
 package myproject.Model.Common.FileManager.TreeModels;
 
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Objects;
 import java.util.Vector;
+import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 
 /**
  *
  * @author BotNaEasyEnv
  */
-public class FileTreeNode implements TreeNode{
+public class FileTreeNode implements MutableTreeNode{
 
     private File value;
     private FileTreeNode parent;
     private List<FileTreeNode> childs;
+    
+    public FileTreeNode(String f, FileTreeNode parent){
+        this(new File(f), parent);
+    }
+    
+    public FileTreeNode(File f, FileTreeNode parent){
+        super();
+        value = f;
+        childs = new ArrayList<FileTreeNode>();
+        this.parent = parent;
+    }
+    
     
     public FileTreeNode(String f){
         this(new File(f));
@@ -31,11 +45,46 @@ public class FileTreeNode implements TreeNode{
         super();
         value = f;
         childs = new ArrayList<FileTreeNode>();
+        parent = null;
+    }
+    
+    public boolean addNodes(File[] files){
+        boolean result = false;
+         if(getAllowsChildren()){
+            for(File f : files){
+                childs.add(new FileTreeNode(f, this));
+            }
+            result = true;
+         }
+        return result;
+    }
+    
+    public boolean addNode(String f){
+         boolean result = false;
+         if(getAllowsChildren()){
+            childs.add(new FileTreeNode(f, this));
+            result = true;
+         }
+        return result;
+    }
+    
+    public boolean addNode(File f){
+        boolean result = false;
+         if(getAllowsChildren()){
+            childs.add(new FileTreeNode(f, this));
+            result = true;
+         }
+        return result;
+    }
+    
+    public void setParent(FileTreeNode parent){
+        this.parent = parent;
     }
     
     public boolean addNode(FileTreeNode node){
         boolean result = false;
         if(getAllowsChildren()){
+            node.setParent(this);
             childs.add(node);
             result = true;
         }
@@ -86,7 +135,7 @@ public class FileTreeNode implements TreeNode{
 
     @Override
     public String toString() {
-        return value.getName();
+        return value.getPath();
     }
 
     @Override
@@ -113,6 +162,47 @@ public class FileTreeNode implements TreeNode{
         }
         return true;
     }
+
+    @Override
+    public void insert(MutableTreeNode mtn, int i) {
+        childs.set(i, (FileTreeNode) mtn);
+    }
+
+    @Override
+    public void remove(int i) {
+        childs.remove(i);
+    }
+
+    @Override
+    public void remove(MutableTreeNode mtn) {
+        childs.remove(mtn);
+    }
+
+    @Override
+    public void setUserObject(Object o) {
+        value = (File) o;
+    }
+
+    @Override
+    public void removeFromParent() {
+        parent.getChilds().remove(this);
+    }
+
+    @Override
+    public void setParent(MutableTreeNode mtn) {
+        parent = (FileTreeNode) mtn;
+    }
     
-    
+    public List<FileTreeNode> getChilds(){
+        return childs;
+    }
+
+    public File getValue() {
+        return value;
+    }
+
+    public void setValue(File value) {
+        this.value = value;
+    }
+
 }

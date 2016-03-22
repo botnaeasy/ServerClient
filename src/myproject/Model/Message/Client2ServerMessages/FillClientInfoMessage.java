@@ -12,11 +12,9 @@ package myproject.Model.Message.Client2ServerMessages;
  */
 public class FillClientInfoMessage extends AbstractC2SMessage{
    
-    private String[][] args;
     
-    public FillClientInfoMessage(String[][] arguments) {
-        super("Fill client info");
-        this.args = arguments;
+    public FillClientInfoMessage(Object[][] arguments) {
+        super("Fill client info", arguments);
     }
 
     @Override
@@ -30,10 +28,6 @@ public class FillClientInfoMessage extends AbstractC2SMessage{
         };
     }
 
-    @Override
-    public String[][] setArguments() {
-        return args;
-    }
 
     @Override
     public Class[][] setClassArguments() {
