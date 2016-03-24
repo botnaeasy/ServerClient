@@ -15,7 +15,12 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
 import java.util.Random;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+import myproject.Model.Common.FileManager.TreeModels.FileTreeModel;
 import myproject.Model.Common.FileManager.TreeModels.FileTreeNode;
 import myproject.Model.Exception.ClientLogoutException;
 import myproject.Model.Message.AbstractMessage;
@@ -29,7 +34,6 @@ import myproject.View.Server.ServerPanel;
  */
 public class Client2Server{
     
-        private static final long serialVersionUID = 1L;
         private Socket socket;
         private BufferedReader socketReader;
         private PrintWriter socketWriter;
@@ -45,7 +49,7 @@ public class Client2Server{
         private boolean isReception = true;
         private boolean isSending = true;
         
-        private FileTreeNode clientFiles;
+        private FileTreeModel model;
         
         private ServerPanel panel; 
         
@@ -79,15 +83,20 @@ public class Client2Server{
             outMessage.flush();
         }
         
-        
         public void addRootChilds(Object[] files){
-            File[] ff = new File[files.length];
             for(int i=0;i<files.length;i++){
-                ff[i] = (File) files[i];
+                model.insertNodeInto(new FileTreeNode((File) files[i]), (FileTreeNode) model.getRoot(), i);
             }
-            clientFiles.addNodes(ff);
+            //model.reload();
         }
         
+        public void addChildsToNode(Object[] files, TreePath path){
+            FileTreeNode parent = ((FileTreeNode)model.getRoot()).findLastFromPath(path);
+            for(int i=0;i<files.length;i++){
+                model.insertNodeInto(new FileTreeNode((File)files[i]), parent, i);
+            }
+           // model.reload();
+        }  
         public void sendCloseClientMessage() throws IOException{
              sendMessage(new StopClientMessage());
         }
@@ -181,11 +190,13 @@ public class Client2Server{
         this.javaVersion = javaVersion;
     }
 
-    public FileTreeNode getClientFiles() {
-        return clientFiles;
+    public DefaultTreeModel getModel() {
+        return model;
     }
 
-    public void setClientFiles(FileTreeNode clientFiles) {
-        this.clientFiles = clientFiles;
+    public void setModel(FileTreeModel model) {
+        this.model =  model;
     }
+    
+    
 }

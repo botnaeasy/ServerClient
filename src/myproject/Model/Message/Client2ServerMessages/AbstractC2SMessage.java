@@ -37,7 +37,6 @@ public abstract class AbstractC2SMessage extends AbstractMessage{
             Class cl = Class.forName("myproject.Model.Server.Client2Server");
             
             for(int i=0;i<methodToExecute.length;i++){
-                  //Method[] methods = cl.getDeclaredMethods();
                   Method method = cl.getDeclaredMethod(methodToExecute[i], types4arguments[i]);
                   method.invoke(c2s,  arguments4method[i]);
             }

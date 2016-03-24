@@ -7,6 +7,7 @@ package myproject.Model.Common.FileManager.TreeModels;
 
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -14,12 +15,13 @@ import java.util.Objects;
 import java.util.Vector;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 
 /**
  *
  * @author BotNaEasyEnv
  */
-public class FileTreeNode implements MutableTreeNode{
+public class FileTreeNode implements MutableTreeNode, Serializable{
 
     private File value;
     private FileTreeNode parent;
@@ -46,6 +48,46 @@ public class FileTreeNode implements MutableTreeNode{
         value = f;
         childs = new ArrayList<FileTreeNode>();
         parent = null;
+    }
+    
+    public boolean addNodesAtLast(File[] files, TreePath path){
+        FileTreeNode node = findLastFromPath(path);
+        if(node!=null){
+            node.addNodes(files);
+            return true;
+        }
+        return false;
+    }
+    
+    public FileTreeNode findLastFromPath(TreePath treePath){
+        Object[] path = treePath.getPath();
+        if(path==null||path.length==0){
+            return null;
+        }
+        if(path.length==1){
+            return this;
+        }
+        return getFoundNode(1,path, this.children());
+    }
+    
+    private FileTreeNode getFoundNode(int level,Object[] path, Enumeration childs ){
+        if(level==path.length-1){
+            while(childs.hasMoreElements()){
+                FileTreeNode node = (FileTreeNode) childs.nextElement();
+                if(node.toString().equals(path[level].toString())){
+                    return node;
+                }
+            }
+            return null;
+        }else{
+            while(childs.hasMoreElements()){
+                TreeNode node = (TreeNode) childs.nextElement();
+                if(node.toString().equals(path[level].toString())){
+                    return getFoundNode(++level, path, node.children());
+                }
+            }
+            return null;
+        }
     }
     
     public boolean addNodes(File[] files){
@@ -165,7 +207,7 @@ public class FileTreeNode implements MutableTreeNode{
 
     @Override
     public void insert(MutableTreeNode mtn, int i) {
-        childs.set(i, (FileTreeNode) mtn);
+        childs.add((FileTreeNode) mtn);
     }
 
     @Override

@@ -5,10 +5,15 @@
  */
 package myproject.Model.Common.FileManager;
 
+import java.io.IOException;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+import myproject.Model.Common.FileManager.TreeModels.FileTreeModel;
 import myproject.Model.Common.FileManager.TreeModels.FileTreeNode;
 import myproject.Model.Logger.Log;
 import myproject.Model.Message.AbstractMessage;
+import myproject.Model.Message.CommonMessages.RequestCatalogInfoMessage;
 import myproject.Model.Message.CommonMessages.RequestDiscInfoMessage;
 import myproject.Model.Server.Client2Server;
 
@@ -22,39 +27,46 @@ public class Client2ServerFileManager<T extends Client2Server> {
     
     public Client2ServerFileManager(T c2s){
         this.c2s = c2s;
+        c2s.setModel(new FileTreeModel(new FileTreeNode(c2s.getClientHostName())));
+        sendDiscsInfoRequest();
     }
     
-
+    public DefaultTreeModel getModel(){
+        return c2s.getModel();
+    }
+    
     public TreeNode getRoot(){
-        if(c2s.getClientFiles()==null){
-            c2s.setClientFiles(new FileTreeNode(c2s.getClientHostName()));
-            sendDiscsInfoRequest();
-        }
-        return c2s.getClientFiles();
+        return (TreeNode) c2s.getModel().getRoot();
     }
     
     private void sendDiscsInfoRequest(){
         try {
             AbstractMessage message = new RequestDiscInfoMessage();
-         c2s.sendMessage(message);
+            c2s.sendMessage(message);
         } catch (Exception e) {
             Log.errorLog(e.getMessage(), e);
         }
     }
     
-    public void sendFilesInfoRequest(FileTreeNode node){
+    public void sendFilesInfoRequest(TreePath path){
+        FileTreeNode node = (FileTreeNode) path.getLastPathComponent();
+        if(node.getValue().isFile()){
+            downloadFileRequest();
+            return;
+        }
         if(node.getChildCount()>0){
             return;
         }
-        if(node.getValue().isFile()){
-            downloadFileRequest();
-        }else{
-            filesInfoRequest();
-        }
+         catalogInfoRequest(path);
     }
     
-    private void filesInfoRequest(){
-        
+    private void catalogInfoRequest(TreePath path){
+        try {
+            AbstractMessage message = new RequestCatalogInfoMessage(path);
+            c2s.sendMessage(message);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
     
     private void downloadFileRequest(){

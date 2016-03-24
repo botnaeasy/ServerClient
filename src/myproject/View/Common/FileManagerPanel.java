@@ -5,20 +5,14 @@
  */
 package myproject.View.Common;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.MutableTreeNode;
-import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreeNode;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.TreePath;
 import myproject.Model.Common.ExtendedComponents.ExtendedJTree;
-import myproject.Model.Common.FileManager.TreeModels.FileTreeModel;
 import myproject.Model.Common.FileManager.Client2ServerFileManager;
-import myproject.Model.Common.FileManager.TreeModels.FileTreeNode;
 import myproject.Model.Server.Client2Server;
 
 /**
@@ -32,6 +26,7 @@ public class FileManagerPanel extends javax.swing.JPanel {
      */
     private ExtendedJTree tree;
     private Client2ServerFileManager manager;
+    private TreePath lastpath;
     
     public FileManagerPanel(Client2Server c2s) {
         initComponents();
@@ -41,17 +36,37 @@ public class FileManagerPanel extends javax.swing.JPanel {
     
     private void initialize(Client2Server c2s){
          manager = new Client2ServerFileManager(c2s);
-         tree = new ExtendedJTree(manager.getRoot());
+         tree = new ExtendedJTree(manager.getModel());//manager.getRoot()
          treePanel.add(new JScrollPane(tree));
     }
     
     private void listener(){
+        manager.getModel().addTreeModelListener(new TreeModelListener() {
+            @Override
+            public void treeNodesChanged(TreeModelEvent tme) {
+            }
+
+            @Override
+            public void treeNodesInserted(TreeModelEvent tme) {
+                manager.getModel().reload();
+                tree.expandPath(lastpath);
+            }
+
+            @Override
+            public void treeNodesRemoved(TreeModelEvent tme) {
+            }
+
+            @Override
+            public void treeStructureChanged(TreeModelEvent tme) {
+            }
+        });
+        
         tree.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent me) {
                 if(me.getClickCount()>=2){
-                    //tree.updateUI();
-                    manager.sendFilesInfoRequest((FileTreeNode) tree.getSelectedNode());
+                    lastpath = tree.getSelectionPath();
+                    manager.sendFilesInfoRequest(tree.getSelectionPath());
                 }
             }
 

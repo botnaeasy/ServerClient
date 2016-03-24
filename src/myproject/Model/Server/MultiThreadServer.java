@@ -157,7 +157,4 @@ public class MultiThreadServer extends DuplexServer {
     public void sendExeTo(AbstractMessage message, int position) throws IOException {
         sendTo(message, position);
     }
-    
-    
-    
 }
