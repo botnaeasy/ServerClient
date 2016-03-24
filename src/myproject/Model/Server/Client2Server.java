@@ -13,6 +13,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Random;
 import javax.swing.tree.DefaultTreeModel;
@@ -22,6 +23,7 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import myproject.Model.Common.FileManager.TreeModels.FileTreeModel;
 import myproject.Model.Common.FileManager.TreeModels.FileTreeNode;
+import myproject.Model.Common.ToolObject;
 import myproject.Model.Exception.ClientLogoutException;
 import myproject.Model.Message.AbstractMessage;
 import myproject.Model.Message.Client2ServerMessages.AbstractC2SMessage;
@@ -198,5 +200,8 @@ public class Client2Server{
         this.model =  model;
     }
     
-    
+    public void saveFile(byte[] fileContent, File file){
+         String regAdd = getClientHostName();
+         ToolObject.saveFile(fileContent, file, regAdd);
+    }
 }

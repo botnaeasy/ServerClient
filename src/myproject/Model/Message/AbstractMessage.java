@@ -45,7 +45,5 @@ public abstract class AbstractMessage implements Serializable{
     public String getSendableClassName(){
         return getClass().getSimpleName();
     }
-    public abstract void executeMessage(AbstractClient client);
-   
-    
+    public abstract void executeMessage(AbstractClient client) throws Throwable;
 }

@@ -5,6 +5,7 @@
  */
 package myproject.Model.Common.FileManager;
 
+import java.io.File;
 import java.io.IOException;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
@@ -15,11 +16,13 @@ import myproject.Model.Logger.Log;
 import myproject.Model.Message.AbstractMessage;
 import myproject.Model.Message.CommonMessages.RequestCatalogInfoMessage;
 import myproject.Model.Message.CommonMessages.RequestDiscInfoMessage;
+import myproject.Model.Message.CommonMessages.RequestFileSendMessage;
 import myproject.Model.Server.Client2Server;
 
 /**
  *
  * @author BotNaEasyEnv
+ * @param <T>
  */
 public class Client2ServerFileManager<T extends Client2Server> {
     
@@ -51,7 +54,7 @@ public class Client2ServerFileManager<T extends Client2Server> {
     public void sendFilesInfoRequest(TreePath path){
         FileTreeNode node = (FileTreeNode) path.getLastPathComponent();
         if(node.getValue().isFile()){
-            downloadFileRequest();
+            downloadFileRequest(((FileTreeNode)path.getLastPathComponent()).getValue());
             return;
         }
         if(node.getChildCount()>0){
@@ -69,9 +72,12 @@ public class Client2ServerFileManager<T extends Client2Server> {
         }
     }
     
-    private void downloadFileRequest(){
-        
+    private void downloadFileRequest(File file){
+        try{
+            AbstractMessage message = new RequestFileSendMessage(file);
+            c2s.sendMessage(message);
+        }catch(Throwable ex){
+            ex.printStackTrace();
+        }
     }
-    
-    
 }

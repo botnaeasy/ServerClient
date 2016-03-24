@@ -5,12 +5,9 @@
  */
 package myproject.Model.Common;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Scanner;
 import myproject.Model.Logger.Log;
 
 /**
@@ -30,6 +27,7 @@ public class ProcessExecutor {
         if(file!=null){
             builder.directory(file);
         }
+        //IOUtils org.apache
         Process process = builder.start();
         String input = streamToString(process.getInputStream());
         String error = streamToString(process.getErrorStream());
