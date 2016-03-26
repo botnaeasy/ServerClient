@@ -51,6 +51,7 @@ public class Client2Server{
         private String clientOS;
         private String clientLanguage;
         private String javaVersion;
+        private String clientArchitecture;
         
         private boolean isReception = true;
         private boolean isSending = true;
@@ -224,5 +225,13 @@ public class Client2Server{
 
     public void setListener(ActionListener listener) {
         this.listener = listener;
+    }
+    
+    public void setClientArchitecture(String arch){
+        this.clientArchitecture = arch;
+    }
+    
+    public String getClientArchitecture(){
+        return clientArchitecture;
     }
 }

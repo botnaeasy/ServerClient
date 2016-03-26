@@ -113,7 +113,8 @@ public class DuplexClient extends AbstractClient {
             {getHostName()},
             {getClientOS()},
             {getClientLanguage()},
-            {getJavaVersion()}
+            {getJavaVersion()},
+            {getClientArchitecture()}
         });
         return message;
     }

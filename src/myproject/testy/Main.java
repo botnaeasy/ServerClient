@@ -20,6 +20,7 @@ public class Main {
 
     public static void main(String[] args) {
 
+        System.out.println(System.getProperty("os.arch"));
         System.out.println("File system roots returned byFileSystemView.getFileSystemView():");
         FileSystemView fsv = FileSystemView.getFileSystemView();
         File[] roots = fsv.getRoots();

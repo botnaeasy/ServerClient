@@ -46,6 +46,7 @@ public abstract class AbstractClient implements Serializable {
     protected String clientOS;
     protected String javaVersion;
     protected String clientLanguage;
+    protected String clientArchitecture;
     /////logger
     protected Log logger;
     
@@ -62,6 +63,7 @@ public abstract class AbstractClient implements Serializable {
             setOS();
             setJavaVersion();
             setClientLanguage();
+            setClientArchitecture();
         } catch (UnknownHostException ex) {
             ex.printStackTrace();
         }
@@ -264,7 +266,17 @@ public abstract class AbstractClient implements Serializable {
     public void setClientLanguage(String clientLanguage) {
         this.clientLanguage = clientLanguage;
     }
+
+    public String getClientArchitecture() {
+        return clientArchitecture;
+    }
+
+    public void setClientArchitecture() {
+        setClientArchitecture(System.getProperty("os.arch"));
+    }
     
-    
+    public void setClientArchitecture(String arch){
+        this.clientArchitecture = arch;
+    }
     
 }

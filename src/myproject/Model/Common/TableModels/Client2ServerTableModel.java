@@ -26,6 +26,7 @@ public class Client2ServerTableModel extends UniversalTableModel<Client2Server> 
             "IP",
             "Hostname",
             "OS",
+            "Architecture",
             "Language",
             "Java version"
         };
@@ -38,6 +39,7 @@ public class Client2ServerTableModel extends UniversalTableModel<Client2Server> 
             row.getClientIP(),
             row.getClientHostName(),
             row.getClientOS(),
+            row.getClientArchitecture(),
             row.getClientLanguage(),
             row.getJavaVersion()
          };

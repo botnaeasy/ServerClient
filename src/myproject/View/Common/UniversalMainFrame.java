@@ -113,8 +113,8 @@ public class UniversalMainFrame extends javax.swing.JFrame {
             public void run() {
                UniversalMainFrame mainFrame= new UniversalMainFrame();
                mainFrame.initPanel(args[0]);
+               mainFrame.setSize(1000, 600);
                mainFrame.setVisible(true);
-               mainFrame.pack();
             }
         });
     }

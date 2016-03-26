@@ -24,7 +24,8 @@ public class FillClientInfoMessage extends AbstractC2SMessage{
             "setClientHostName",
             "setClientOS",
             "setClientLanguage",
-            "setJavaVersion"
+            "setJavaVersion",
+            "setClientArchitecture"
         };
     }
 
@@ -32,6 +33,7 @@ public class FillClientInfoMessage extends AbstractC2SMessage{
     @Override
     public Class[][] setClassArguments() {
         return new Class[][]{
+            {String.class},
             {String.class},
             {String.class},
             {String.class},
