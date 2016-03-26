@@ -5,6 +5,7 @@
  */
 package myproject.Model.Message.Client2ServerMessages;
 
+import java.io.File;
 import javax.swing.tree.TreePath;
 
 /**
@@ -27,7 +28,7 @@ public class FillCatalogInfoMessage extends AbstractC2SMessage{
     @Override
     public Class[][] setClassArguments() {
         return new Class[][]{
-            {Object[].class, TreePath.class}  
+            {File[].class, TreePath.class}  
         };
     }
 }

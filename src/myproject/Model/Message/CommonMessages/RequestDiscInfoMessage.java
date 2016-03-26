@@ -32,7 +32,7 @@ public class RequestDiscInfoMessage extends AbstractMessage {
         }
         
         Object[][] args = new Object[][]{
-            {files.toArray(new Object[]{})}
+            {files.toArray(new File[]{})}
         };
         AbstractMessage mes = new FillDiscInfoMessage(args);
         client.sendMessage(mes);

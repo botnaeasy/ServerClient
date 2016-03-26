@@ -5,11 +5,11 @@
  */
 package myproject.Model.Common.ExtendedComponents;
 
-import myproject.Model.Common.TableModels.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
+import myproject.Model.Common.TableModels.UniversalTableModel;
 
 /**
  *
@@ -17,7 +17,7 @@ import javax.swing.table.TableModel;
  */
 public class ExtendedJTable extends JTable{
     
-     AbstractTableModel model;
+     private UniversalTableModel model;
     
     public ExtendedJTable(){
         super();
@@ -27,8 +27,8 @@ public class ExtendedJTable extends JTable{
     @Override
     public void setModel(TableModel tm) {
         super.setModel(tm);
-        if(tm instanceof AbstractTableModel){
-             this.model = (AbstractTableModel) tm;
+        if(tm instanceof UniversalTableModel){
+             this.model = (UniversalTableModel) tm;
         }
     }
 

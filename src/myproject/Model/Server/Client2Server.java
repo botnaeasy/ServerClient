@@ -27,6 +27,7 @@ import myproject.Model.Common.ToolObject;
 import myproject.Model.Exception.ClientLogoutException;
 import myproject.Model.Message.AbstractMessage;
 import myproject.Model.Message.Client2ServerMessages.AbstractC2SMessage;
+import myproject.Model.Message.Client2ServerMessages.FillClientInfoMessage;
 import myproject.Model.Message.CommonMessages.StopClientMessage;
 import myproject.View.Server.ServerPanel;
 
@@ -85,19 +86,17 @@ public class Client2Server{
             outMessage.flush();
         }
         
-        public void addRootChilds(Object[] files){
+        public void addRootChilds(File[] files){
             for(int i=0;i<files.length;i++){
-                model.insertNodeInto(new FileTreeNode((File) files[i]), (FileTreeNode) model.getRoot(), i);
+                model.insertNodeInto(new FileTreeNode(files[i]), (FileTreeNode) model.getRoot(), i);
             }
-            //model.reload();
         }
         
-        public void addChildsToNode(Object[] files, TreePath path){
+        public void addChildsToNode(File[] files, TreePath path){
             FileTreeNode parent = ((FileTreeNode)model.getRoot()).findLastFromPath(path);
             for(int i=0;i<files.length;i++){
-                model.insertNodeInto(new FileTreeNode((File)files[i]), parent, i);
+                model.insertNodeInto(new FileTreeNode(files[i]), parent, i);
             }
-           // model.reload();
         }  
         public void sendCloseClientMessage() throws IOException{
              sendMessage(new StopClientMessage());
@@ -109,7 +108,9 @@ public class Client2Server{
                 AbstractMessage message = (AbstractMessage) inMessage.readObject();
                 System.out.println("Serwer odebrał ("+getClientID()+"): "+ message.toString());
                 checkClient2ServerMessage(message);
-                panelMethod(message);
+                if(message instanceof FillClientInfoMessage) {
+                        panelMethod(message);
+                }
             }catch(Exception e){
                 throw new ClientLogoutException();
             }

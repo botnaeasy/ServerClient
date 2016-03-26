@@ -5,7 +5,7 @@
  */
 package myproject.Model.Common.TableModels;
 
-import myproject.Model.Common.TableModels.AbstractTableModel;
+import myproject.Model.Common.TableModels.UniversalTableModel;
 import java.util.List;
 import myproject.Model.Server.Client2Server;
 
@@ -13,7 +13,7 @@ import myproject.Model.Server.Client2Server;
  *
  * @author BotNaEasyEnv
  */
-public class Client2ServerTableModel extends AbstractTableModel<Client2Server>  {
+public class Client2ServerTableModel extends UniversalTableModel<Client2Server>  {
 
     public Client2ServerTableModel(List<Client2Server> data) {
         super(data);

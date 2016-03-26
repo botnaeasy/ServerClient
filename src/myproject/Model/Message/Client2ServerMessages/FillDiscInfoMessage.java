@@ -29,7 +29,7 @@ public class FillDiscInfoMessage extends AbstractC2SMessage{
     @Override
     public Class[][] setClassArguments() {
           return new Class[][]{
-              {Object[].class}
+              {File[].class}
           };
     }
     

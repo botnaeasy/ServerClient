@@ -6,27 +6,29 @@
 package myproject.Model.Common.TableModels;
 
 import java.util.List;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
+import javax.swing.table.AbstractTableModel;
 
 /**
  *
  * @author BotNaEasyEnv
  */
-public abstract class AbstractTableModel<T> implements TableModel{
+public abstract class UniversalTableModel<T> extends AbstractTableModel{
     
     private List<T> data;
     private Object[] columns;
     private Object[][] rows;
      
-    public AbstractTableModel(List<T> data){
+    public UniversalTableModel(List<T> data){
+        super();
         this.data = data;
-        setData();
         setColumns();
+        setData();
+        
     }
     public abstract Object[] createRow(T row);
     public abstract Object[] createColumns();
 
+    
     public void setData(){
         Object[][] result = new Object[data.size()][createColumns().length];
         for(int i=0;i<data.size();i++){
@@ -39,6 +41,13 @@ public abstract class AbstractTableModel<T> implements TableModel{
         columns = createColumns();
     }
     
+    @Override
+    public String getColumnName(int i) {
+       return columns[i].toString();
+    }
+    
+    
+    /*
     @Override
     public int getRowCount() {
        return data.size();
@@ -56,7 +65,7 @@ public abstract class AbstractTableModel<T> implements TableModel{
 
     @Override
     public Class<?> getColumnClass(int i) {
-        return rows[0][i].getClass();
+        return columns[i].getClass();
     }
 
     @Override
@@ -83,7 +92,7 @@ public abstract class AbstractTableModel<T> implements TableModel{
     public void removeTableModelListener(TableModelListener tl) {
        
     }
-
+*/
     public List<T> getData() {
         return data;
     }
@@ -94,6 +103,21 @@ public abstract class AbstractTableModel<T> implements TableModel{
 
     public Object[][] getRows() {
         return rows;
+    }
+
+    @Override
+    public int getRowCount() {
+        return data.size();
+    }
+
+    @Override
+    public int getColumnCount() {
+        return columns.length;
+    }
+
+    @Override
+    public Object getValueAt(int i, int i1) {
+        return rows[i][i1];
     }
     
 }

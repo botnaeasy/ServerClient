@@ -61,6 +61,7 @@ public class DuplexClient extends AbstractClient {
     }
     
     private void newReceivingThread() throws IOException{
+        isReception = true;
         Thread t = new Thread(){
           @Override
           public void run(){
@@ -72,6 +73,8 @@ public class DuplexClient extends AbstractClient {
                        panelMethod(message);
                    } catch (ServerLogoutException ex) {
                        reconnect();
+                   } catch (Throwable ex) {
+                       ex.printStackTrace();
                    }
              }
           }  
@@ -81,6 +84,8 @@ public class DuplexClient extends AbstractClient {
     }
     
     private void newSendingThread(){
+        isSending = true;
+        isSendedInfo = false;
         Thread t = new Thread(){
             @Override
             public void run(){

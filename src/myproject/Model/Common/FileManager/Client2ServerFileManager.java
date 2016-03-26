@@ -53,11 +53,11 @@ public class Client2ServerFileManager<T extends Client2Server> {
     
     public void sendFilesInfoRequest(TreePath path){
         FileTreeNode node = (FileTreeNode) path.getLastPathComponent();
-        if(node.getValue().isFile()){
-            downloadFileRequest(((FileTreeNode)path.getLastPathComponent()).getValue());
+        if(node.getChildCount()>0){
             return;
         }
-        if(node.getChildCount()>0){
+        if(node.getValue().isFile()){////
+            downloadFileRequest(((FileTreeNode)path.getLastPathComponent()).getValue());
             return;
         }
          catalogInfoRequest(path);
