@@ -5,6 +5,8 @@
  */
 package myproject.View.Common;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JScrollPane;
@@ -41,15 +43,24 @@ public class FileManagerPanel extends javax.swing.JPanel {
     }
     
     private void listener(){
+        manager.getClient().setListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                tree.expandPath(lastpath);
+            }
+            
+        });
+        /*
         manager.getModel().addTreeModelListener(new TreeModelListener() {
             @Override
             public void treeNodesChanged(TreeModelEvent tme) {
+                //tree.expandPath(lastpath);
             }
 
             @Override
             public void treeNodesInserted(TreeModelEvent tme) {
-                manager.getModel().reload();
-                tree.expandPath(lastpath);
+                //manager.getModel().reload();
+                //tree.expandPath(lastpath);
             }
 
             @Override
@@ -58,8 +69,9 @@ public class FileManagerPanel extends javax.swing.JPanel {
 
             @Override
             public void treeStructureChanged(TreeModelEvent tme) {
+                 //tree.expandPath(lastpath);
             }
-        });
+        });*/
         
         tree.addMouseListener(new MouseListener() {
             @Override

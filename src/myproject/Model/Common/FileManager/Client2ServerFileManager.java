@@ -12,6 +12,7 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import myproject.Model.Common.FileManager.TreeModels.FileTreeModel;
 import myproject.Model.Common.FileManager.TreeModels.FileTreeNode;
+import myproject.Model.Common.ToolObject;
 import myproject.Model.Logger.Log;
 import myproject.Model.Message.AbstractMessage;
 import myproject.Model.Message.CommonMessages.RequestCatalogInfoMessage;
@@ -38,6 +39,10 @@ public class Client2ServerFileManager<T extends Client2Server> {
         return c2s.getModel();
     }
     
+    public T getClient(){
+        return c2s;
+    }
+    
     public TreeNode getRoot(){
         return (TreeNode) c2s.getModel().getRoot();
     }
@@ -56,7 +61,7 @@ public class Client2ServerFileManager<T extends Client2Server> {
         if(node.getChildCount()>0){
             return;
         }
-        if(node.getValue().isFile()){////
+        if(node.getValue().isFile()||ToolObject.isFile(node.getValue().getName())){
             downloadFileRequest(((FileTreeNode)path.getLastPathComponent()).getValue());
             return;
         }

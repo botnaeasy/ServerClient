@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import myproject.Model.Logger.Log;
 
 /**
  *
@@ -34,6 +35,17 @@ public class ToolObject {
     }
     public static String getStringTempDirectory(){
         return TEMP_DIRECTORY;
+    }
+    
+    public static boolean isFile(String couldFile){
+        try {
+            String[] temp = couldFile.split("\\.");
+            if(temp[1].length()<=4){
+                return true;
+            }
+        } catch (Exception e) {
+        }
+        return false;
     }
     
     public static void saveFile(byte[] fileContent, File file, String reg){

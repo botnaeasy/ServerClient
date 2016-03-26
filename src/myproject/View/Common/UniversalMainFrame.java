@@ -39,7 +39,7 @@ public class UniversalMainFrame extends javax.swing.JFrame {
         if(arg.equals("server")){
             //mainPanel.add(new ServerPanel());
             showInInternalFrame("Server", new ServerPanel(), false);
-            //showInInternalFrame("Client", new ClientPanel(), true);
+            showInInternalFrame("Client", new ClientPanel(), true);
         }else if(arg.equals("client")){
             //mainPanel.add(new ClientPanel());
             showInInternalFrame("Client", new ClientPanel(), false);
@@ -81,7 +81,7 @@ public class UniversalMainFrame extends javax.swing.JFrame {
         return frame;
     }
     
-    public static void showErrorDialog(String message){
+    public void showErrorDialog(String message){
         JOptionPane.showMessageDialog(main, message, "Warning!", JOptionPane.WARNING_MESSAGE);
     }
 

@@ -176,7 +176,7 @@ public class FileTreeNode implements MutableTreeNode, Serializable{
 
     @Override
     public String toString() {
-        return value.getPath();
+        return value.getName().equals("")||value.getName()==null?value.getPath():value.getName();
     }
 
     @Override

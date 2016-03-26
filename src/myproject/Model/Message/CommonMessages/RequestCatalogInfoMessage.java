@@ -6,6 +6,7 @@
 package myproject.Model.Message.CommonMessages;
 
 import java.io.File;
+import java.nio.file.FileSystem;
 import java.util.List;
 import javax.swing.tree.TreePath;
 import myproject.Model.Client.AbstractClient;
@@ -29,7 +30,7 @@ public class RequestCatalogInfoMessage extends AbstractMessage{
     @Override
     public void executeMessage(AbstractClient client) {
         File[] files = ((FileTreeNode)path.getLastPathComponent()).getValue().listFiles();
-        
+        ((FileTreeNode)path.getLastPathComponent()).getValue().list();
         Object[][] args = new Object[][]{
             {files, path}
         };

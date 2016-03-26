@@ -5,6 +5,8 @@
  */
 package myproject.Model.Server;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +31,7 @@ import myproject.Model.Message.AbstractMessage;
 import myproject.Model.Message.Client2ServerMessages.AbstractC2SMessage;
 import myproject.Model.Message.Client2ServerMessages.FillClientInfoMessage;
 import myproject.Model.Message.CommonMessages.StopClientMessage;
+import myproject.View.Common.UniversalMainFrame;
 import myproject.View.Server.ServerPanel;
 
 /**
@@ -55,6 +58,8 @@ public class Client2Server{
         private FileTreeModel model;
         
         private ServerPanel panel; 
+        
+        private ActionListener listener;
         
         public Client2Server(Socket socket) throws IOException{
             this(socket, new Random().nextInt());
@@ -90,13 +95,20 @@ public class Client2Server{
             for(int i=0;i<files.length;i++){
                 model.insertNodeInto(new FileTreeNode(files[i]), (FileTreeNode) model.getRoot(), i);
             }
+            model.reload();
         }
         
         public void addChildsToNode(File[] files, TreePath path){
+            if(files==null){
+                UniversalMainFrame.main.showErrorDialog("Directory blocked or not exists!");
+                return;
+            }
             FileTreeNode parent = ((FileTreeNode)model.getRoot()).findLastFromPath(path);
             for(int i=0;i<files.length;i++){
                 model.insertNodeInto(new FileTreeNode(files[i]), parent, i);
             }
+            model.reload();
+            listener.actionPerformed(new ActionEvent(this, 0, "end of reloading"));
         }  
         public void sendCloseClientMessage() throws IOException{
              sendMessage(new StopClientMessage());
@@ -204,5 +216,13 @@ public class Client2Server{
     public void saveFile(byte[] fileContent, File file){
          String regAdd = getClientHostName();
          ToolObject.saveFile(fileContent, file, regAdd);
+    }
+
+    public ActionListener getListener() {
+        return listener;
+    }
+
+    public void setListener(ActionListener listener) {
+        this.listener = listener;
     }
 }
