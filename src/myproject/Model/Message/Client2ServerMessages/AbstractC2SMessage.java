@@ -41,7 +41,7 @@ public abstract class AbstractC2SMessage extends AbstractMessage{
                   method.invoke(c2s,  arguments4method[i]);
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
             Log.errorLog(ex, ex.getCause(), AbstractC2SMessage.class);
         }
     }

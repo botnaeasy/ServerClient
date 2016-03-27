@@ -9,12 +9,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.util.List;
 import javax.swing.JScrollPane;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
 import myproject.Model.Common.ExtendedComponents.ExtendedJTree;
 import myproject.Model.Common.FileManager.Client2ServerFileManager;
+import myproject.Model.Common.FileManager.TreeModels.FileTreeNode;
+import myproject.Model.Common.TableModels.FilesTableModel;
 import myproject.Model.Server.Client2Server;
 
 /**
@@ -29,6 +33,7 @@ public class FileManagerPanel extends javax.swing.JPanel {
     private ExtendedJTree tree;
     private Client2ServerFileManager manager;
     private TreePath lastpath;
+    private FilesPanel directoryPanel;
     
     public FileManagerPanel(Client2Server c2s) {
         initComponents();
@@ -40,6 +45,13 @@ public class FileManagerPanel extends javax.swing.JPanel {
          manager = new Client2ServerFileManager(c2s);
          tree = new ExtendedJTree(manager.getModel());//manager.getRoot()
          treePanel.add(new JScrollPane(tree));
+         directoryPanel = new FilesPanel();
+         filesPanel.add(directoryPanel);
+    }
+    
+    private void loadModel(){
+        List<File> list = ((FileTreeNode) tree.getSelectedNode()).getChildsValue();
+        directoryPanel.setModel(new FilesTableModel(list));
     }
     
     private void listener(){
@@ -47,8 +59,9 @@ public class FileManagerPanel extends javax.swing.JPanel {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 tree.expandPath(lastpath);
-            }
-            
+                tree.setSelectionPath(lastpath);
+                loadModel();
+            }            
         });
         /*
         manager.getModel().addTreeModelListener(new TreeModelListener() {
@@ -79,6 +92,7 @@ public class FileManagerPanel extends javax.swing.JPanel {
                 if(me.getClickCount()>=2){
                     lastpath = tree.getSelectionPath();
                     manager.sendFilesInfoRequest(tree.getSelectionPath());
+                    loadModel();
                 }
             }
 

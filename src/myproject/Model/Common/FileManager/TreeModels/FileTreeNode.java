@@ -30,6 +30,14 @@ public class FileTreeNode implements MutableTreeNode, Serializable{
         this(new File(f), parent);
     }
     
+    public List<File> getChildsValue(){
+        List<File> files = new ArrayList<File>();
+        for(FileTreeNode node: childs){
+            files.add(node.value);
+        }
+        return files;
+    }
+    
     public FileTreeNode(File f, FileTreeNode parent){
         super();
         value = f;
