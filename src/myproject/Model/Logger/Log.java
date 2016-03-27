@@ -29,6 +29,10 @@ public class Log<T> {
         this.instanceOfClass = instanceOfClass;
     }
     
+    public static void errorLog(Object message, Class clazz){
+        System.err.println(clazz.getSimpleName()+" Error log: "+message);
+    }
+    
     public static void errorLog(Object message, Object cause){
         System.err.println("Error log: "+message+" \ncause: "+cause);
     }

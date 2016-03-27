@@ -7,37 +7,39 @@ package myproject.Model.Common;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import myproject.Model.Logger.Log;
+import org.apache.commons.io.IOUtils;
 
 /**
  *
  * @author BotNaEasyEnv
  */
 public class ProcessExecutor {
-    public static String execute(String... commands) throws IOException{
+    public static String execute(String... commands){
         return properExecute(null, commands);
     }
-    public static String execute(File file, String... commands) throws IOException{
+    public static String execute(File file, String... commands){
         return properExecute(file, commands);
     }
     
-    private static String properExecute(File file, String... commands) throws IOException{
-        ProcessBuilder builder = new ProcessBuilder(commands);
-        if(file!=null){
-            builder.directory(file);
+    private static String properExecute(File file, String... commands){
+        try {
+            ProcessBuilder builder = new ProcessBuilder(commands);
+            if(file!=null){
+                builder.directory(file);
+            }
+            Process process = builder.start();
+            String input = IOUtils.toString(process.getInputStream());
+            String error = IOUtils.toString(process.getErrorStream());
+            process.waitFor();
+            if(!error.isEmpty()){
+                Log.errorLog(error,ProcessExecutor.class);
+            }
+            return input;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Log.errorLog(ex,ex.getCause(),ProcessExecutor.class);
         }
-        //IOUtils org.apache
-        Process process = builder.start();
-        String input = streamToString(process.getInputStream());
-        String error = streamToString(process.getErrorStream());
-        Log.log(error);
-
-        return input;
-    }
-    
-    private static String streamToString(InputStream is) throws IOException{
-        return "";
-    }
-    
+        return null;
+    }  
 }

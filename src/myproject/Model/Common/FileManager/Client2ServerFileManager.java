@@ -61,6 +61,10 @@ public class Client2ServerFileManager<T extends Client2Server> {
         if(node.getChildCount()>0){
             return;
         }
+        if(node.getValue().isDirectory()){
+            catalogInfoRequest(path);
+            return;
+        }
         if(node.getValue().isFile()||ToolObject.isFile(node.getValue().getName())){
             downloadFileRequest(((FileTreeNode)path.getLastPathComponent()).getValue());
             return;

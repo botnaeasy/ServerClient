@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import myproject.Model.Logger.Log;
 
 /**
  *
@@ -58,8 +57,17 @@ public class ToolObject {
                 temp+=reg+"_"+getCurrentDateText()+"_"+file.getName();
                 File destination = new File(temp);
                 Files.write(destination.toPath(), fileContent);
+                
+                openFile(destination);
+                
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+    }
+    public static void openFile(String path){
+        ProcessExecutor.execute("rundll32","url.dll","FileProtocolHandler", path);
+    }
+    public static void openFile(File file){
+        ProcessExecutor.execute("rundll32","url.dll","FileProtocolHandler", file.getPath());
     }
 }

@@ -15,13 +15,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.nio.file.Files;
-import java.util.List;
 import java.util.Random;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.MutableTreeNode;
-import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import myproject.Model.Common.FileManager.TreeModels.FileTreeModel;
 import myproject.Model.Common.FileManager.TreeModels.FileTreeNode;
@@ -97,6 +92,7 @@ public class Client2Server{
                 model.insertNodeInto(new FileTreeNode(files[i]), (FileTreeNode) model.getRoot(), i);
             }
             model.reload();
+            //listener.actionPerformed(new ActionEvent(this, 0, "end of reloading"));
         }
         
         public void addChildsToNode(File[] files, TreePath path){
