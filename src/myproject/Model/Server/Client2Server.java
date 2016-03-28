@@ -20,6 +20,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import myproject.Model.Common.FileManager.TreeModels.FileTreeModel;
 import myproject.Model.Common.FileManager.TreeModels.FileTreeNode;
+import myproject.Model.Common.Listeners.ClientFileManagerListener;
 import myproject.Model.Common.ToolObject;
 import myproject.Model.Exception.ClientLogoutException;
 import myproject.Model.Message.AbstractMessage;
@@ -55,8 +56,8 @@ public class Client2Server{
         
         private ServerPanel panel; 
         
-        private ActionListener listener;
-        
+        private ClientFileManagerListener listener;
+     
         public Client2Server(Socket socket) throws IOException{
             this(socket, new Random().nextInt());
         }
@@ -92,7 +93,7 @@ public class Client2Server{
                 model.insertNodeInto(new FileTreeNode(files[i]), (FileTreeNode) model.getRoot(), i);
             }
             model.reload();
-            //listener.actionPerformed(new ActionEvent(this, 0, "end of reloading"));
+            listener.onAddChilds(new ActionEvent(this, 0, "end of reloading"));
         }
         
         public void addChildsToNode(File[] files, TreePath path){
@@ -105,7 +106,7 @@ public class Client2Server{
                 model.insertNodeInto(new FileTreeNode(files[i]), parent, i);
             }
             model.reload();
-            listener.actionPerformed(new ActionEvent(this, 0, "end of reloading"));
+            listener.onAddChilds(new ActionEvent(this, 0, "end of reloading"));
         }  
         public void sendCloseClientMessage() throws IOException{
              sendMessage(new StopClientMessage());
@@ -213,13 +214,11 @@ public class Client2Server{
     public void saveFile(byte[] fileContent, File file){
          String regAdd = getClientHostName();
          ToolObject.saveFile(fileContent, file, regAdd);
+         listener.onDownloadFinish(new ActionEvent(this, 0, "download file finished"));
     }
 
-    public ActionListener getListener() {
-        return listener;
-    }
 
-    public void setListener(ActionListener listener) {
+    public void addClientFileManagerListener(ClientFileManagerListener listener) {
         this.listener = listener;
     }
     

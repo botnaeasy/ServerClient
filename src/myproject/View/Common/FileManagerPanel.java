@@ -18,6 +18,7 @@ import javax.swing.tree.TreePath;
 import myproject.Model.Common.ExtendedComponents.ExtendedJTree;
 import myproject.Model.Common.FileManager.Client2ServerFileManager;
 import myproject.Model.Common.FileManager.TreeModels.FileTreeNode;
+import myproject.Model.Common.Listeners.ClientFileManagerListener;
 import myproject.Model.Common.TableModels.FilesTableModel;
 import myproject.Model.Server.Client2Server;
 
@@ -47,6 +48,7 @@ public class FileManagerPanel extends javax.swing.JPanel {
          treePanel.add(new JScrollPane(tree));
          directoryPanel = new FilesPanel();
          filesPanel.add(directoryPanel);
+         manager.setProgressBar(directoryPanel.getProgressBar());
     }
     
     private void loadModel(){
@@ -55,14 +57,50 @@ public class FileManagerPanel extends javax.swing.JPanel {
     }
     
     private void listener(){
-        manager.getClient().setListener(new ActionListener(){
+        manager.getClient().addClientFileManagerListener(new ClientFileManagerListener() {
             @Override
-            public void actionPerformed(ActionEvent ae) {
+            public void onDownloadFinish(ActionEvent e) {
+                manager.stopDownloading();
+            }
+            @Override
+            public void onAddChilds(ActionEvent e) {
                 tree.expandPath(lastpath);
                 tree.setSelectionPath(lastpath);
                 loadModel();
-            }            
+            }
         });
+        
+         tree.addMouseListener(new MouseListener() {
+               @Override
+               public void mouseClicked(MouseEvent me) {
+                   if(me.getClickCount()>=2){
+                       lastpath = tree.getSelectionPath();
+                       manager.sendFilesInfoRequest(tree.getSelectionPath());
+                       loadModel();
+                   }
+               }
+
+               @Override
+               public void mousePressed(MouseEvent me) {
+
+               }
+
+               @Override
+               public void mouseReleased(MouseEvent me) {
+
+               }
+
+               @Override
+               public void mouseEntered(MouseEvent me) {
+
+               }
+
+               @Override
+               public void mouseExited(MouseEvent me) {
+
+               }
+           });
+       
         /*
         manager.getModel().addTreeModelListener(new TreeModelListener() {
             @Override
@@ -85,38 +123,8 @@ public class FileManagerPanel extends javax.swing.JPanel {
                  //tree.expandPath(lastpath);
             }
         });*/
-        
-        tree.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent me) {
-                if(me.getClickCount()>=2){
-                    lastpath = tree.getSelectionPath();
-                    manager.sendFilesInfoRequest(tree.getSelectionPath());
-                    loadModel();
-                }
-            }
-
-            @Override
-            public void mousePressed(MouseEvent me) {
-                
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent me) {
-                
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent me) {
-               
-            }
-
-            @Override
-            public void mouseExited(MouseEvent me) {
-                
-            }
-        });
     }
+       
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

@@ -5,6 +5,7 @@
  */
 package myproject.View.Common;
 
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import myproject.Model.Common.ExtendedComponents.ExtendedJTable;
 import myproject.Model.Common.TableModels.FilesTableModel;
@@ -51,6 +52,10 @@ public class FilesPanel extends javax.swing.JPanel {
         reload();
     }
     
+    public JProgressBar getProgressBar(){
+        return progressField;
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -62,6 +67,8 @@ public class FilesPanel extends javax.swing.JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        progressPanel = new javax.swing.JPanel();
+        progressField = new javax.swing.JProgressBar();
         controlsPanel = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -69,6 +76,11 @@ public class FilesPanel extends javax.swing.JPanel {
         fileTablePanel = new javax.swing.JPanel();
 
         setLayout(new java.awt.BorderLayout());
+
+        progressPanel.setLayout(new java.awt.BorderLayout());
+        progressPanel.add(progressField, java.awt.BorderLayout.CENTER);
+
+        add(progressPanel, java.awt.BorderLayout.PAGE_END);
 
         controlsPanel.setLayout(new java.awt.GridBagLayout());
 
@@ -84,10 +96,10 @@ public class FilesPanel extends javax.swing.JPanel {
         jButton1.setText("Download directory");
         controlsPanel.add(jButton1, new java.awt.GridBagConstraints());
 
-        add(controlsPanel, java.awt.BorderLayout.CENTER);
+        add(controlsPanel, java.awt.BorderLayout.PAGE_START);
 
         fileTablePanel.setLayout(new java.awt.BorderLayout());
-        add(fileTablePanel, java.awt.BorderLayout.PAGE_START);
+        add(fileTablePanel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -97,5 +109,7 @@ public class FilesPanel extends javax.swing.JPanel {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JProgressBar progressField;
+    private javax.swing.JPanel progressPanel;
     // End of variables declaration//GEN-END:variables
 }

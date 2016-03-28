@@ -7,6 +7,7 @@ package myproject.Model.Common.FileManager;
 
 import java.io.File;
 import java.io.IOException;
+import javax.swing.JProgressBar;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
@@ -28,11 +29,17 @@ import myproject.Model.Server.Client2Server;
 public class Client2ServerFileManager<T extends Client2Server> {
     
     private T c2s;
+    private boolean isDownloading = false;
+    private JProgressBar progressField;
     
     public Client2ServerFileManager(T c2s){
         this.c2s = c2s;
         c2s.setModel(new FileTreeModel(new FileTreeNode(c2s.getClientHostName())));
         sendDiscsInfoRequest();
+    }
+    
+    public void setProgressBar(JProgressBar bar){
+        progressField = bar;
     }
     
     public DefaultTreeModel getModel(){
@@ -83,10 +90,39 @@ public class Client2ServerFileManager<T extends Client2Server> {
     
     private void downloadFileRequest(File file){
         try{
+            startProgressThread();
             AbstractMessage message = new RequestFileSendMessage(file);
             c2s.sendMessage(message);
         }catch(Throwable ex){
             ex.printStackTrace();
         }
+    }
+    
+    public void startProgressThread(){
+        isDownloading = true;
+        Thread t = new Thread(){
+            @Override
+            public void run(){
+               int i =1;
+                while(isDownloading){
+                    try {
+                        if(i>=100){
+                            i=1;
+                        }
+                        progressField.setValue(i);
+                        sleep(10);
+                        i++;
+                    } catch (InterruptedException ex) {
+                    }
+                }
+                progressField.setValue(0);
+            }
+        };
+        t.setName("Downloading thread");
+        t.start();
+    }
+    
+    public void stopDownloading(){
+        isDownloading = false;
     }
 }
