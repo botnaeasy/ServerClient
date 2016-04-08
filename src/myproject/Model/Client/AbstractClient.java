@@ -29,7 +29,7 @@ public abstract class AbstractClient implements Serializable {
     public static final int SLEEP_TIME = 5000;
     ///server info
     protected int PORT = 6000;
-    protected String HOST = "192.168.2.3";
+    protected String HOST = "192.168.1.10";
     protected Socket socket;
     ///streams
     protected BufferedReader socketReader;

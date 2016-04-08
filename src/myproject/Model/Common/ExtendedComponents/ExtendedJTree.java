@@ -23,5 +23,5 @@ public class ExtendedJTree extends JTree {
     }
     public TreeNode getSelectedNode(){
          return (TreeNode) getSelectionPath().getLastPathComponent();
-     }
+    }
 }

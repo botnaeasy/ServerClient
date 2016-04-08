@@ -46,7 +46,7 @@ public class FileManagerPanel extends javax.swing.JPanel {
          manager = new Client2ServerFileManager(c2s);
          tree = new ExtendedJTree(manager.getModel());//manager.getRoot()
          treePanel.add(new JScrollPane(tree));
-         directoryPanel = new FilesPanel();
+         directoryPanel = new FilesPanel(manager, tree);
          filesPanel.add(directoryPanel);
          manager.setProgressBar(directoryPanel.getProgressBar());
     }

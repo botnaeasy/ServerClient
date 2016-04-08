@@ -5,9 +5,13 @@
  */
 package myproject.View.Common;
 
+import java.io.File;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import myproject.Model.Common.ExtendedComponents.ExtendedJTable;
+import myproject.Model.Common.ExtendedComponents.ExtendedJTree;
+import myproject.Model.Common.FileManager.Client2ServerFileManager;
+import myproject.Model.Common.FileManager.TreeModels.FileTreeNode;
 import myproject.Model.Common.TableModels.FilesTableModel;
 
 /**
@@ -21,8 +25,12 @@ public class FilesPanel extends javax.swing.JPanel {
      */
     private ExtendedJTable table;
     private FilesTableModel model;
+    private Client2ServerFileManager manager;
+    private ExtendedJTree tree;
     
-    public FilesPanel() {
+    public FilesPanel(Client2ServerFileManager manager, ExtendedJTree tree) {
+        this.manager = manager;
+        this.tree = tree;
         initComponents();
         initTable();
     }
@@ -70,9 +78,9 @@ public class FilesPanel extends javax.swing.JPanel {
         progressPanel = new javax.swing.JPanel();
         progressField = new javax.swing.JProgressBar();
         controlsPanel = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        sendFileButton = new javax.swing.JButton();
+        createDirectoryButton = new javax.swing.JButton();
+        downloadDirectoryButton = new javax.swing.JButton();
         fileTablePanel = new javax.swing.JPanel();
 
         setLayout(new java.awt.BorderLayout());
@@ -84,17 +92,32 @@ public class FilesPanel extends javax.swing.JPanel {
 
         controlsPanel.setLayout(new java.awt.GridBagLayout());
 
-        jButton3.setText("Send file");
-        controlsPanel.add(jButton3, new java.awt.GridBagConstraints());
+        sendFileButton.setText("Send file");
+        sendFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sendFileButtonActionPerformed(evt);
+            }
+        });
+        controlsPanel.add(sendFileButton, new java.awt.GridBagConstraints());
 
-        jButton2.setText("Create directory");
+        createDirectoryButton.setText("Create directory");
+        createDirectoryButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createDirectoryButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        controlsPanel.add(jButton2, gridBagConstraints);
+        controlsPanel.add(createDirectoryButton, gridBagConstraints);
 
-        jButton1.setText("Download directory");
-        controlsPanel.add(jButton1, new java.awt.GridBagConstraints());
+        downloadDirectoryButton.setText("Download directory");
+        downloadDirectoryButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                downloadDirectoryButtonActionPerformed(evt);
+            }
+        });
+        controlsPanel.add(downloadDirectoryButton, new java.awt.GridBagConstraints());
 
         add(controlsPanel, java.awt.BorderLayout.PAGE_START);
 
@@ -102,14 +125,28 @@ public class FilesPanel extends javax.swing.JPanel {
         add(fileTablePanel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void sendFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendFileButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_sendFileButtonActionPerformed
+
+    private void createDirectoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createDirectoryButtonActionPerformed
+        FileTreeNode node = (FileTreeNode) tree.getSelectedNode();
+        File toCreate = new File(node.getValue().getAbsolutePath()+"\\folder");
+        manager.createDirectoryMessage(toCreate, tree.getSelectionPath());
+    }//GEN-LAST:event_createDirectoryButtonActionPerformed
+
+    private void downloadDirectoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadDirectoryButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_downloadDirectoryButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel controlsPanel;
+    private javax.swing.JButton createDirectoryButton;
+    private javax.swing.JButton downloadDirectoryButton;
     private javax.swing.JPanel fileTablePanel;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JProgressBar progressField;
     private javax.swing.JPanel progressPanel;
+    private javax.swing.JButton sendFileButton;
     // End of variables declaration//GEN-END:variables
 }
