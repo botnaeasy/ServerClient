@@ -58,6 +58,13 @@ public class UniversalMainFrame extends javax.swing.JFrame {
         }
     }
     
+    public static void showInInternalFrame(JInternalFrame frame){
+        if(!checkIsEnabled(frame)){
+            main.getDesktop().add(frame);
+            frame.toFront();
+        }
+    }
+    
     private static boolean checkIsEnabled(JInternalFrame frame){
          Component[] comps = main.getDesktop().getComponents();
          for(int i=0;i<comps.length;i++){

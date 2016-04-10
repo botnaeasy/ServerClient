@@ -9,9 +9,8 @@ import java.io.IOException;
 import javax.swing.JScrollPane;
 import myproject.Model.Common.TableModels.Client2ServerTableModel;
 import myproject.Model.Common.ExtendedComponents.ExtendedJTable;
-import myproject.Model.Common.ProcessExecutor;
 import myproject.Model.Server.MultiThreadServer;
-import myproject.View.Common.FileManagerPanel;
+import myproject.View.FileManager.FileManagerPanel;
 import myproject.View.Common.UniversalMainFrame;
 
 /**

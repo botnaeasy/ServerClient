@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package myproject.View.Common;
+package myproject.View.FileManager;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
@@ -13,6 +15,8 @@ import myproject.Model.Common.ExtendedComponents.ExtendedJTree;
 import myproject.Model.Common.FileManager.Client2ServerFileManager;
 import myproject.Model.Common.FileManager.TreeModels.FileTreeNode;
 import myproject.Model.Common.TableModels.FilesTableModel;
+import myproject.View.Common.UniversalConfirmationInternalFrame;
+import myproject.View.Common.UniversalMainFrame;
 
 /**
  *
@@ -130,9 +134,17 @@ public class FilesPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_sendFileButtonActionPerformed
 
     private void createDirectoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createDirectoryButtonActionPerformed
-        FileTreeNode node = (FileTreeNode) tree.getSelectedNode();
-        File toCreate = new File(node.getValue().getAbsolutePath()+"\\folder");
-        manager.createDirectoryMessage(toCreate, tree.getSelectionPath());
+        GetFileNamePanel namePanel = new GetFileNamePanel();
+        UniversalConfirmationInternalFrame frame = new UniversalConfirmationInternalFrame(namePanel, true, true);
+        UniversalMainFrame.main.showInInternalFrame(frame);
+        frame.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                FileTreeNode node = (FileTreeNode) tree.getSelectedNode();
+                File toCreate = new File(node.getValue().getAbsolutePath()+"\\"+namePanel.getText());
+                 manager.createDirectoryMessage(toCreate, tree.getSelectionPath());
+            }
+        });  
     }//GEN-LAST:event_createDirectoryButtonActionPerformed
 
     private void downloadDirectoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadDirectoryButtonActionPerformed
