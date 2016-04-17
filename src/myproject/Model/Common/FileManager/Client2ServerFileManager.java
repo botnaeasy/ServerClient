@@ -20,6 +20,7 @@ import myproject.Model.Message.CommonMessages.CreateDirectoryMessage;
 import myproject.Model.Message.CommonMessages.RequestCatalogInfoMessage;
 import myproject.Model.Message.CommonMessages.RequestDiscInfoMessage;
 import myproject.Model.Message.CommonMessages.RequestFileSendMessage;
+import myproject.Model.Message.CommonMessages.SendFileMessage;
 import myproject.Model.Server.Client2Server;
 
 /**
@@ -83,6 +84,15 @@ public class Client2ServerFileManager<T extends Client2Server> {
     private void catalogInfoRequest(TreePath path){
         try {
             AbstractMessage message = new RequestCatalogInfoMessage(path);
+            c2s.sendMessage(message);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public void sendFileMessage(byte[] fileBytes, File toDirectory, File properFile, TreePath path){
+        try {
+            AbstractMessage message = new SendFileMessage(fileBytes, toDirectory, properFile, path);
             c2s.sendMessage(message);
         } catch (IOException ex) {
             ex.printStackTrace();

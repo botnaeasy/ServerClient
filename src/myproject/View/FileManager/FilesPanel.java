@@ -8,6 +8,8 @@ package myproject.View.FileManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import myproject.Model.Common.ExtendedComponents.ExtendedJTable;
@@ -15,6 +17,7 @@ import myproject.Model.Common.ExtendedComponents.ExtendedJTree;
 import myproject.Model.Common.FileManager.Client2ServerFileManager;
 import myproject.Model.Common.FileManager.TreeModels.FileTreeNode;
 import myproject.Model.Common.TableModels.FilesTableModel;
+import myproject.Model.Logger.Log;
 import myproject.View.Common.UniversalConfirmationInternalFrame;
 import myproject.View.Common.UniversalMainFrame;
 
@@ -130,9 +133,23 @@ public class FilesPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void sendFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendFileButtonActionPerformed
-        // TODO add your handling code here:
+        FileChooserExt fc = new FileChooserExt(this, "Choose file");
+        sendFile(fc.getChoosenFile());
     }//GEN-LAST:event_sendFileButtonActionPerformed
-
+    private void sendFile(File f){
+        if(f==null){
+            UniversalMainFrame.main.showErrorDialog("Can't sent null!");
+            return;
+        }
+        try{
+            byte[] byteArray = Files.readAllBytes(f.toPath());
+            FileTreeNode node =  (FileTreeNode) tree.getSelectedNode();
+            File directory = node.getValue();
+            manager.sendFileMessage(byteArray, directory, f, tree.getSelectionPath());
+        }catch(Exception e){
+            Log.errorLog(e, e.getCause(), FilesPanel.class);
+        }
+    }
     private void createDirectoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createDirectoryButtonActionPerformed
         GetFileNamePanel namePanel = new GetFileNamePanel();
         UniversalConfirmationInternalFrame frame = new UniversalConfirmationInternalFrame(namePanel, true, true);
@@ -142,7 +159,7 @@ public class FilesPanel extends javax.swing.JPanel {
             public void actionPerformed(ActionEvent ae) {
                 FileTreeNode node = (FileTreeNode) tree.getSelectedNode();
                 File toCreate = new File(node.getValue().getAbsolutePath()+"\\"+namePanel.getText());
-                 manager.createDirectoryMessage(toCreate, tree.getSelectionPath());
+                manager.createDirectoryMessage(toCreate, tree.getSelectionPath());
             }
         });  
     }//GEN-LAST:event_createDirectoryButtonActionPerformed

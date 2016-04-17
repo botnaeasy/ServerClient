@@ -213,7 +213,7 @@ public class Client2Server{
     
     public void saveFile(byte[] fileContent, File file){
          String regAdd = getClientHostName();
-         ToolObject.saveFile(fileContent, file, regAdd);
+         ToolObject.saveFileTemp(fileContent, file, regAdd, true);
          listener.onDownloadFinish(new ActionEvent(this, 0, "download file finished"));
     }
 

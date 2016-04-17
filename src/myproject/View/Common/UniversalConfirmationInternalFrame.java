@@ -60,19 +60,14 @@ public class UniversalConfirmationInternalFrame extends javax.swing.JInternalFra
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         properPanel = new javax.swing.JPanel();
         butttonPanel = new javax.swing.JPanel();
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
 
-        setLayout(new java.awt.GridBagLayout());
-
         properPanel.setLayout(new java.awt.BorderLayout());
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        add(properPanel, gridBagConstraints);
+        getContentPane().add(properPanel, java.awt.BorderLayout.CENTER);
 
         butttonPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         butttonPanel.setLayout(new java.awt.GridBagLayout());
@@ -93,12 +88,7 @@ public class UniversalConfirmationInternalFrame extends javax.swing.JInternalFra
         });
         butttonPanel.add(cancelButton, new java.awt.GridBagConstraints());
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_END;
-        add(butttonPanel, gridBagConstraints);
+        getContentPane().add(butttonPanel, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed

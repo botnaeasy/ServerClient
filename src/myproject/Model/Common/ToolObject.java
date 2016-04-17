@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import myproject.Model.Logger.Log;
 
 /**
  *
@@ -47,21 +48,52 @@ public class ToolObject {
         return false;
     }
     
-    public static void saveFile(byte[] fileContent, File file, String reg){
+    public static void saveFileTemp(byte[] fileContent, File file){
+        saveFileTemp(fileContent, file, null, false);
+    }
+    
+    public static void saveAndOpenFileTemp(byte[] fileContent, File file, String regex){
+        saveFileTemp(fileContent, file, regex, true);
+    }
+    public static void saveAndOpenFileTemp(byte[] fileContent, File file){
+        saveFileTemp(fileContent, file, null, true);
+    }
+    
+    public static void saveFile(byte[] fileContent, File toDirectory, File file, boolean open){
+        try{
+            String allPath = toDirectory.getAbsolutePath()+"/"+file.getName();
+            File destination = new File(allPath);
+            Files.write(destination.toPath(), fileContent);
+            
+            if(open){
+                openFile(destination);
+            }
+        }catch(Exception ex){
+            Log.errorLog(ex, ex.getCause(), ToolObject.class);
+        }
+    }
+    
+    public static void saveFileTemp(byte[] fileContent, File file, String regex, boolean open){
          try {
                 File tempDir = getTempDirectory();
                 if(!tempDir.exists()){
                     Files.createDirectory(tempDir.toPath());
                 }
                 String temp = getStringTempDirectory();
-                temp+=reg+"_"+getCurrentDateText()+"_"+file.getName();
+                if(regex==null){
+                    temp+=file.getName();
+                }else{
+                    temp+=regex+"_"+getCurrentDateText()+"_"+file.getName();
+                }
                 File destination = new File(temp);
                 Files.write(destination.toPath(), fileContent);
                 
-                openFile(destination);
+                if(open){
+                    openFile(destination);
+                }
                 
             } catch (IOException ex) {
-                ex.printStackTrace();
+                Log.errorLog(ex, ex.getCause(), ToolObject.class);
             }
     }
     public static void openFile(String path){
