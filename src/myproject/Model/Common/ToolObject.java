@@ -33,8 +33,12 @@ public class ToolObject {
     public static File getTempDirectory(){
         return new File(TEMP_DIRECTORY);
     }
-    public static String getStringTempDirectory(){
-        return TEMP_DIRECTORY;
+    public static String getStringTempDirectory(String directory){
+        if(directory == null){
+         return TEMP_DIRECTORY;
+        }else{
+            return TEMP_DIRECTORY+"\\"+directory+"\\";
+        }
     }
     
     public static boolean isFile(String couldFile){
@@ -48,15 +52,15 @@ public class ToolObject {
         return false;
     }
     
-    public static void saveFileTemp(byte[] fileContent, File file){
-        saveFileTemp(fileContent, file, null, false);
+    public static void saveFileTemp(byte[] fileContent, File file, String directory){
+        saveFileTemp(fileContent, file, null, false, directory);
     }
     
-    public static void saveAndOpenFileTemp(byte[] fileContent, File file, String regex){
-        saveFileTemp(fileContent, file, regex, true);
+    public static void saveAndOpenFileTemp(byte[] fileContent, File file, String regex,String directory){
+        saveFileTemp(fileContent, file, regex, true, directory);
     }
-    public static void saveAndOpenFileTemp(byte[] fileContent, File file){
-        saveFileTemp(fileContent, file, null, true);
+    public static void saveAndOpenFileTemp(byte[] fileContent, File file, String directory){
+        saveFileTemp(fileContent, file, null, true, directory);
     }
     
     public static void saveFile(byte[] fileContent, File toDirectory, File file, boolean open){
@@ -73,13 +77,13 @@ public class ToolObject {
         }
     }
     
-    public static void saveFileTemp(byte[] fileContent, File file, String regex, boolean open){
+    public static void saveFileTemp(byte[] fileContent, File file, String regex, boolean open, String directory){
          try {
                 File tempDir = getTempDirectory();
                 if(!tempDir.exists()){
                     Files.createDirectory(tempDir.toPath());
                 }
-                String temp = getStringTempDirectory();
+                String temp = getStringTempDirectory(directory);
                 if(regex==null){
                     temp+=file.getName();
                 }else{

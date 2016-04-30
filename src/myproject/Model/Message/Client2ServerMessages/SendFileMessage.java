@@ -27,7 +27,7 @@ public class SendFileMessage extends AbstractC2SMessage{
     @Override
     public Class[][] setClassArguments() {
         return new Class[][]{
-            {byte[].class, File.class}
+            {byte[].class, File.class, boolean.class, String.class}
         };
     }
     

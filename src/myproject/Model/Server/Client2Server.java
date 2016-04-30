@@ -211,9 +211,9 @@ public class Client2Server{
         this.model =  model;
     }
     
-    public void saveFile(byte[] fileContent, File file){
+    public void saveFile(byte[] fileContent, File file, boolean open, String directory){
          String regAdd = getClientHostName();
-         ToolObject.saveFileTemp(fileContent, file, regAdd, true);
+         ToolObject.saveFileTemp(fileContent, file, regAdd, open, directory);
          listener.onDownloadFinish(new ActionEvent(this, 0, "download file finished"));
     }
 

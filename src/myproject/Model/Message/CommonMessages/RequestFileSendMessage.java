@@ -19,9 +19,13 @@ import myproject.Model.Message.Client2ServerMessages.SendFileMessage;
 public class RequestFileSendMessage extends AbstractMessage{
 
     private File toDownload;
-    public RequestFileSendMessage(File file){
+    private boolean open;
+    private String directory;
+    public RequestFileSendMessage(File file, boolean open, String directory){
         super("RequestFileSendMessage");
         this.toDownload= file;
+        this.open = open;
+        this.directory = directory;
     }
     
     @Override
@@ -29,7 +33,7 @@ public class RequestFileSendMessage extends AbstractMessage{
         byte[] fileContent = Files.readAllBytes(toDownload.toPath());
         
         Object[][] args = new Object[][]{
-            {fileContent, toDownload}
+            {fileContent, toDownload, open, directory}
         };
         
         AbstractMessage message = new SendFileMessage(args);

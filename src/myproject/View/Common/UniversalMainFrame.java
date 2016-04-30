@@ -91,6 +91,10 @@ public class UniversalMainFrame extends javax.swing.JFrame {
     public void showErrorDialog(String message){
         JOptionPane.showMessageDialog(main, message, "Warning!", JOptionPane.WARNING_MESSAGE);
     }
+    
+    public void showInfoDialog(String message){
+        JOptionPane.showMessageDialog(main, message, "Info", JOptionPane.INFORMATION_MESSAGE);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

@@ -17,6 +17,7 @@ import myproject.Model.Common.ExtendedComponents.ExtendedJTree;
 import myproject.Model.Common.FileManager.Client2ServerFileManager;
 import myproject.Model.Common.FileManager.TreeModels.FileTreeNode;
 import myproject.Model.Common.TableModels.FilesTableModel;
+import myproject.Model.Common.ToolObject;
 import myproject.Model.Logger.Log;
 import myproject.View.Common.UniversalConfirmationInternalFrame;
 import myproject.View.Common.UniversalMainFrame;
@@ -165,10 +166,26 @@ public class FilesPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_createDirectoryButtonActionPerformed
 
     private void downloadDirectoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadDirectoryButtonActionPerformed
-        // TODO add your handling code here:
+        FileTreeNode node = (FileTreeNode) tree.getSelectedNode();
+        if(node!=null){
+            File directory = createDownloadedDirectory(node);
+            if(directory == null){
+                UniversalMainFrame.main.showErrorDialog("Error in creating directory");
+                return;
+            }
+            manager.downloadAllFilesInDirectory(node);
+        }else{
+            UniversalMainFrame.main.showInfoDialog("Select directory");
+        }
     }//GEN-LAST:event_downloadDirectoryButtonActionPerformed
 
-
+    private File createDownloadedDirectory(FileTreeNode node){
+        File directory = new File(ToolObject.TEMP_DIRECTORY+"\\"+node.getValue().getName());
+        if(directory.mkdirs()){
+            return directory;
+        }
+        return null;
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel controlsPanel;
     private javax.swing.JButton createDirectoryButton;

@@ -75,10 +75,18 @@ public class Client2ServerFileManager<T extends Client2Server> {
             return;
         }
         if(node.getValue().isFile()||ToolObject.isFile(node.getValue().getName())){
-            downloadFileRequest(((FileTreeNode)path.getLastPathComponent()).getValue());
+            downloadFileRequest(((FileTreeNode)path.getLastPathComponent()).getValue(), true, null);
             return;
         }
          catalogInfoRequest(path);
+    }
+    
+    public void downloadAllFilesInDirectory(FileTreeNode node){
+        for(File f : node.getChildsValue()){
+            if(f.isFile()||ToolObject.isFile(f.getName())){
+                downloadFileRequest(f, false, node.getValue().getName());
+            }
+        }
     }
     
     private void catalogInfoRequest(TreePath path){
@@ -99,10 +107,10 @@ public class Client2ServerFileManager<T extends Client2Server> {
         }
     }
     
-    private void downloadFileRequest(File file){
+    private void downloadFileRequest(File file, boolean open, String directory){
         try{
             startProgressThread();
-            AbstractMessage message = new RequestFileSendMessage(file);
+            AbstractMessage message = new RequestFileSendMessage(file, open, directory);
             c2s.sendMessage(message);
         }catch(Throwable ex){
             ex.printStackTrace();
