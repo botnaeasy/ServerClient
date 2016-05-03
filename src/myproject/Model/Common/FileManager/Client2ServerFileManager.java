@@ -17,6 +17,7 @@ import myproject.Model.Common.ToolObject;
 import myproject.Model.Logger.Log;
 import myproject.Model.Message.AbstractMessage;
 import myproject.Model.Message.CommonMessages.CreateDirectoryMessage;
+import myproject.Model.Message.CommonMessages.DeleteDirectoryMessage;
 import myproject.Model.Message.CommonMessages.RequestCatalogInfoMessage;
 import myproject.Model.Message.CommonMessages.RequestDiscInfoMessage;
 import myproject.Model.Message.CommonMessages.RequestFileSendMessage;
@@ -113,6 +114,19 @@ public class Client2ServerFileManager<T extends Client2Server> {
             AbstractMessage message = new RequestFileSendMessage(file, open, directory);
             c2s.sendMessage(message);
         }catch(Throwable ex){
+            ex.printStackTrace();
+        }
+    }
+    
+     public void removeFile(FileTreeNode node) {
+         
+     }
+
+    public void removeDirectory(FileTreeNode node) {
+        try{
+            AbstractMessage message = new DeleteDirectoryMessage(node);
+            c2s.sendMessage(message);
+        }catch(IOException ex){
             ex.printStackTrace();
         }
     }

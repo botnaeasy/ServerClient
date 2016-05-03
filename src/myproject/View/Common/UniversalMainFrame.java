@@ -95,6 +95,11 @@ public class UniversalMainFrame extends javax.swing.JFrame {
     public void showInfoDialog(String message){
         JOptionPane.showMessageDialog(main, message, "Info", JOptionPane.INFORMATION_MESSAGE);
     }
+    
+    public boolean showQuestionDialog(String message){
+        int response = JOptionPane.showConfirmDialog(main, message, "Question", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        return response == JOptionPane.YES_OPTION;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

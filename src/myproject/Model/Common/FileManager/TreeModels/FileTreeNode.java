@@ -30,21 +30,12 @@ public class FileTreeNode implements MutableTreeNode, Serializable{
         this(new File(f), parent);
     }
     
-    public List<File> getChildsValue(){
-        List<File> files = new ArrayList<File>();
-        for(FileTreeNode node: childs){
-            files.add(node.value);
-        }
-        return files;
-    }
-    
     public FileTreeNode(File f, FileTreeNode parent){
         super();
         value = f;
         childs = new ArrayList<FileTreeNode>();
-        this.parent = parent;
+        setParent(parent);
     }
-    
     
     public FileTreeNode(String f){
         this(new File(f));
@@ -54,7 +45,15 @@ public class FileTreeNode implements MutableTreeNode, Serializable{
         super();
         value = f;
         childs = new ArrayList<FileTreeNode>();
-        parent = null;
+        setParent(null);
+    }
+    
+    public List<File> getChildsValue(){
+        List<File> files = new ArrayList<File>();
+        for(FileTreeNode node: childs){
+            files.add(node.value);
+        }
+        return files;
     }
     
     public boolean addNodesAtLast(File[] files, TreePath path){
@@ -126,9 +125,6 @@ public class FileTreeNode implements MutableTreeNode, Serializable{
         return result;
     }
     
-    public void setParent(FileTreeNode parent){
-        this.parent = parent;
-    }
     
     public boolean addNode(FileTreeNode node){
         boolean result = false;
@@ -219,7 +215,9 @@ public class FileTreeNode implements MutableTreeNode, Serializable{
 
     @Override
     public void remove(int i) {
-        childs.remove(i);
+        if(childs.size()>i&&i>0){
+            childs.remove(i);
+        }
     }
 
     @Override
@@ -234,7 +232,7 @@ public class FileTreeNode implements MutableTreeNode, Serializable{
 
     @Override
     public void removeFromParent() {
-        parent.getChilds().remove(this);
+       parent.getChilds().remove(this);
     }
 
     @Override

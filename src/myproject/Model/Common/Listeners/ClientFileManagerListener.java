@@ -15,4 +15,5 @@ public interface ClientFileManagerListener {
     
     public void onDownloadFinish(ActionEvent e);
     public void onAddChilds(ActionEvent e);
+    public void onDeleteChilds(ActionEvent e);
 }

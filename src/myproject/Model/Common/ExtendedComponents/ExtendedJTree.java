@@ -22,6 +22,9 @@ public class ExtendedJTree extends JTree {
         super(model);
     }
     public TreeNode getSelectedNode(){
-         return (TreeNode) getSelectionPath().getLastPathComponent();
+        if(getSelectionPath()!=null){
+            return (TreeNode) getSelectionPath().getLastPathComponent();
+        }
+        return null;
     }
 }

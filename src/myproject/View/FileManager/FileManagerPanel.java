@@ -52,8 +52,10 @@ public class FileManagerPanel extends javax.swing.JPanel {
     }
     
     private void loadModel(){
-        List<File> list = ((FileTreeNode) tree.getSelectedNode()).getChildsValue();
-        directoryPanel.setModel(new FilesTableModel(list));
+        if(tree.getSelectedNode() != null){
+            List<File> list = ((FileTreeNode) tree.getSelectedNode()).getChildsValue();
+            directoryPanel.setModel(new FilesTableModel(list));
+        }
     }
     
     private void listener(){
@@ -64,6 +66,14 @@ public class FileManagerPanel extends javax.swing.JPanel {
             }
             @Override
             public void onAddChilds(ActionEvent e) {
+                tree.expandPath(lastpath);
+                tree.setSelectionPath(lastpath);
+                loadModel();
+            }
+
+            @Override
+            public void onDeleteChilds(ActionEvent e) {
+                lastpath = lastpath.getParentPath();
                 tree.expandPath(lastpath);
                 tree.setSelectionPath(lastpath);
                 loadModel();

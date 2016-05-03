@@ -89,11 +89,14 @@ public class Client2Server{
         }
         
         public void addRootChilds(File[] files){
+            FileTreeNode root = (FileTreeNode) model.getRoot();
             for(int i=0;i<files.length;i++){
-                model.insertNodeInto(new FileTreeNode(files[i]), (FileTreeNode) model.getRoot(), i);
+                model.insertNodeInto(new FileTreeNode(files[i], root), root, i);
             }
             model.reload();
-            listener.onAddChilds(new ActionEvent(this, 0, "end of reloading"));
+            if(listener!=null){
+                listener.onAddChilds(new ActionEvent(this, 0, "end of reloading"));
+            }
         }
         
         public void addChildsToNode(File[] files, TreePath path){
@@ -103,15 +106,28 @@ public class Client2Server{
             }
             FileTreeNode parent = ((FileTreeNode)model.getRoot()).findLastFromPath(path);
             for(int i=0;i<files.length;i++){
-                model.insertNodeInto(new FileTreeNode(files[i]), parent, i);
+                model.insertNodeInto(new FileTreeNode(files[i], parent), parent, i);
             }
             model.reload();
-            listener.onAddChilds(new ActionEvent(this, 0, "end of reloading"));
+            if(listener!=null){
+                listener.onAddChilds(new ActionEvent(this, 0, "end of reloading"));
+            }
         }  
         public void sendCloseClientMessage() throws IOException{
              sendMessage(new StopClientMessage());
         }
         
+        public void removeNode(FileTreeNode node){
+            model.removeNode(node);
+            model.reload();
+            if(listener!=null){
+                listener.onDeleteChilds(new ActionEvent(this, 0, "remove child"));
+            }
+        }
+        
+        public void DeleteFileMessage(String ex, String cause){
+            UniversalMainFrame.main.showErrorDialog(clientHostName+": "+ex +" cause: "+cause);
+        }
         
         public void showMessage() throws  ClientLogoutException{
             try{

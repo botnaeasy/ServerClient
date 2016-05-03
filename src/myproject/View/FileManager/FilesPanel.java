@@ -8,7 +8,6 @@ package myproject.View.FileManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
@@ -89,6 +88,7 @@ public class FilesPanel extends javax.swing.JPanel {
         sendFileButton = new javax.swing.JButton();
         createDirectoryButton = new javax.swing.JButton();
         downloadDirectoryButton = new javax.swing.JButton();
+        removeButton = new javax.swing.JButton();
         fileTablePanel = new javax.swing.JPanel();
 
         setLayout(new java.awt.BorderLayout());
@@ -126,6 +126,14 @@ public class FilesPanel extends javax.swing.JPanel {
             }
         });
         controlsPanel.add(downloadDirectoryButton, new java.awt.GridBagConstraints());
+
+        removeButton.setText("Remove");
+        removeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeButtonActionPerformed(evt);
+            }
+        });
+        controlsPanel.add(removeButton, new java.awt.GridBagConstraints());
 
         add(controlsPanel, java.awt.BorderLayout.PAGE_START);
 
@@ -179,6 +187,23 @@ public class FilesPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_downloadDirectoryButtonActionPerformed
 
+    private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
+        FileTreeNode node = (FileTreeNode) tree.getSelectedNode();
+        if(node == null){
+            UniversalMainFrame.main.showInfoDialog("Select directory");
+            return;
+        }
+        if(node.getValue().isFile()){
+            if(UniversalMainFrame.main.showQuestionDialog("Are u sure to remove this file?")){
+                manager.removeFile(node);
+            }
+        }else{
+            if(UniversalMainFrame.main.showQuestionDialog("Are u sure to remove this directory and all files in it?")){
+                manager.removeDirectory(node);
+            }
+        }
+    }//GEN-LAST:event_removeButtonActionPerformed
+
     private File createDownloadedDirectory(FileTreeNode node){
         File directory = new File(ToolObject.TEMP_DIRECTORY+"\\"+node.getValue().getName());
         if(directory.mkdirs()){
@@ -193,6 +218,7 @@ public class FilesPanel extends javax.swing.JPanel {
     private javax.swing.JPanel fileTablePanel;
     private javax.swing.JProgressBar progressField;
     private javax.swing.JPanel progressPanel;
+    private javax.swing.JButton removeButton;
     private javax.swing.JButton sendFileButton;
     // End of variables declaration//GEN-END:variables
 }
