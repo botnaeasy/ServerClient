@@ -15,31 +15,46 @@ import org.apache.commons.io.IOUtils;
  * @author BotNaEasyEnv
  */
 public class ProcessExecutor {
-    public static String execute(String... commands){
+    public static String executeQuitely(String... commands){
+        return properExecuteQuitely(null, commands);
+    }
+    public static String executeQuitely(File file, String... commands){
+        return properExecuteQuitely(file, commands);
+    }
+    
+    public static String execute(String... commands) throws IOException, InterruptedException{
         return properExecute(null, commands);
     }
-    public static String execute(File file, String... commands){
+    public static String execute(File file, String... commands) throws IOException, InterruptedException{
         return properExecute(file, commands);
     }
     
-    private static String properExecute(File file, String... commands){
+    private static String properExecuteQuitely(File file, String... commands){
         try {
-            ProcessBuilder builder = new ProcessBuilder(commands);
-            if(file!=null){
-                builder.directory(file);
-            }
-            Process process = builder.start();
-            String input = IOUtils.toString(process.getInputStream());
-            String error = IOUtils.toString(process.getErrorStream());
-            process.waitFor();
-            if(!error.isEmpty()){
-                Log.errorLog(error,ProcessExecutor.class);
-            }
-            return input;
+            properExecute(file, commands);
         } catch (Exception ex) {
             ex.printStackTrace();
             Log.errorLog(ex,ex.getCause(),ProcessExecutor.class);
         }
         return null;
-    }  
+    } 
+    
+    private static String properExecute(File file, String... commands) throws IOException, InterruptedException{
+        ProcessBuilder builder = new ProcessBuilder(commands);
+        if(file!=null){
+            builder.directory(file);
+        }
+        Process process = builder.start();
+        String input = IOUtils.toString(process.getInputStream());
+        String error = IOUtils.toString(process.getErrorStream());
+        process.waitFor();
+        if(!error.isEmpty()){
+            Log.errorLog(error,ProcessExecutor.class);
+        }
+        String result = input;
+        if(input.isEmpty()){
+            result = error;
+        }
+        return result;
+    }
 }

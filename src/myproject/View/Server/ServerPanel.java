@@ -12,6 +12,7 @@ import myproject.Model.Common.ExtendedComponents.ExtendedJTable;
 import myproject.Model.Server.MultiThreadServer;
 import myproject.View.FileManager.FileManagerPanel;
 import myproject.View.Common.UniversalMainFrame;
+import myproject.View.Console.ConsolePanel;
 
 /**
  *
@@ -81,19 +82,28 @@ public class ServerPanel extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         testButton = new javax.swing.JButton();
+        consoleButton = new javax.swing.JButton();
         tablePanel = new javax.swing.JPanel();
 
         setLayout(new java.awt.BorderLayout());
 
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
-        testButton.setText("test");
+        testButton.setText("File manager");
         testButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 testButtonActionPerformed(evt);
             }
         });
         jPanel1.add(testButton, new java.awt.GridBagConstraints());
+
+        consoleButton.setText("Console");
+        consoleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                consoleButtonActionPerformed(evt);
+            }
+        });
+        jPanel1.add(consoleButton, new java.awt.GridBagConstraints());
 
         add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
@@ -107,8 +117,13 @@ public class ServerPanel extends javax.swing.JPanel {
             UniversalMainFrame.main.showInInternalFrame("File manager", new FileManagerPanel(clientsTable.getSelectedObject()), true);
     }//GEN-LAST:event_testButtonActionPerformed
 
+    private void consoleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consoleButtonActionPerformed
+        UniversalMainFrame.main.showInInternalFrame("Console manager", new ConsolePanel(clientsTable.getSelectedObject()), true);
+    }//GEN-LAST:event_consoleButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton consoleButton;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel tablePanel;
     private javax.swing.JButton testButton;

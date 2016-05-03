@@ -9,23 +9,23 @@ package myproject.Model.Message.Client2ServerMessages;
  *
  * @author BotNaEasyEnv
  */
-public class ExceptionMessage extends AbstractC2SMessage{
+public class CommandAnswerMessage extends AbstractC2SMessage{
 
-    public ExceptionMessage(String message, Object[][] args) {
-        super("Exception message "+message, args);
+    public CommandAnswerMessage(Object[][] args) {
+        super("CommandAnswerMessage", args);
     }
 
     @Override
     public String[] setMethod() {
         return new String[]{
-            "showException"
+            "commandAnswer"
         };
     }
 
     @Override
     public Class[][] setClassArguments() {
         return new Class[][]{
-            {String.class, Throwable.class}  
+            {String.class}
         };
     }
     

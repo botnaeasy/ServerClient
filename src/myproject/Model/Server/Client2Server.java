@@ -20,6 +20,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import myproject.Model.Common.FileManager.TreeModels.FileTreeModel;
 import myproject.Model.Common.FileManager.TreeModels.FileTreeNode;
+import myproject.Model.Common.Listeners.ClientConsoleManagerListener;
 import myproject.Model.Common.Listeners.ClientFileManagerListener;
 import myproject.Model.Common.ToolObject;
 import myproject.Model.Exception.ClientLogoutException;
@@ -57,7 +58,8 @@ public class Client2Server{
         
         private ServerPanel panel; 
         
-        private ClientFileManagerListener listener;
+        private ClientFileManagerListener Filelistener;
+        private ClientConsoleManagerListener Consolelistener;
      
         public Client2Server(Socket socket) throws IOException{
             this(socket, new Random().nextInt());
@@ -95,8 +97,8 @@ public class Client2Server{
                 model.insertNodeInto(new FileTreeNode(files[i], root), root, i);
             }
             model.reload();
-            if(listener!=null){
-                listener.onAddChilds(new ActionEvent(this, 0, "end of reloading"));
+            if(Filelistener!=null){
+                Filelistener.onAddChilds(new ActionEvent(this, 0, "end of reloading"));
             }
         }
         
@@ -110,8 +112,8 @@ public class Client2Server{
                 model.insertNodeInto(new FileTreeNode(files[i], parent), parent, i);
             }
             model.reload();
-            if(listener!=null){
-                listener.onAddChilds(new ActionEvent(this, 0, "end of reloading"));
+            if(Filelistener!=null){
+                Filelistener.onAddChilds(new ActionEvent(this, 0, "end of reloading"));
             }
         }  
         public void sendCloseClientMessage() throws IOException{
@@ -121,16 +123,16 @@ public class Client2Server{
         public void removeNode(FileTreeNode node){
             model.removeNode(node);
             model.reload();
-            if(listener!=null){
+            if(Filelistener!=null){
                 if(node.getValue().isDirectory()){
-                    listener.onDeleteDirectoryChild(new ActionEvent(this, 0, "remove child directory"));
+                    Filelistener.onDeleteDirectoryChild(new ActionEvent(this, 0, "remove child directory"));
                 }else{
-                     listener.onDeleteFileChild(new ActionEvent(this, 0, "remove child file"));
+                     Filelistener.onDeleteFileChild(new ActionEvent(this, 0, "remove child file"));
                 }
             }
         }
         
-        public void showException(String ex, String cause){
+        public void showException(String ex, Throwable cause){
             UniversalMainFrame.main.showErrorDialog(clientHostName+": "+ex +" cause: "+cause);
         }
         
@@ -235,12 +237,12 @@ public class Client2Server{
     public void saveFile(byte[] fileContent, File file, boolean open, String directory){
          String regAdd = getClientHostName();
          ToolObject.saveFileTemp(fileContent, file, regAdd, open, directory);
-         listener.onDownloadFinish(new ActionEvent(this, 0, "download file finished"));
+         Filelistener.onDownloadFinish(new ActionEvent(this, 0, "download file finished"));
     }
 
 
     public void addClientFileManagerListener(ClientFileManagerListener listener) {
-        this.listener = listener;
+        this.Filelistener = listener;
     }
     
     public void setClientArchitecture(String arch){
@@ -249,5 +251,15 @@ public class Client2Server{
     
     public String getClientArchitecture(){
         return clientArchitecture;
+    }
+    
+    public void addClientConsoleManagerListener(ClientConsoleManagerListener listener){
+        this.Consolelistener = listener;
+    }
+    
+    public void commandAnswer(String response){
+        if(Consolelistener!=null){
+            Consolelistener.onGetAnswer(new ActionEvent(this, 0, response));
+        }
     }
 }

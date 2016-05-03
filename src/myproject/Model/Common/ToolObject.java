@@ -101,9 +101,9 @@ public class ToolObject {
             }
     }
     public static void openFile(String path){
-        ProcessExecutor.execute("rundll32","url.dll","FileProtocolHandler", path);
+        ProcessExecutor.executeQuitely("rundll32","url.dll","FileProtocolHandler", path);
     }
     public static void openFile(File file){
-        ProcessExecutor.execute("rundll32","url.dll","FileProtocolHandler", file.getPath());
+        ProcessExecutor.executeQuitely("rundll32","url.dll","FileProtocolHandler", file.getPath());
     }
 }
