@@ -25,6 +25,7 @@ import myproject.Model.Common.ToolObject;
 import myproject.Model.Exception.ClientLogoutException;
 import myproject.Model.Message.AbstractMessage;
 import myproject.Model.Message.Client2ServerMessages.AbstractC2SMessage;
+import myproject.Model.Message.Client2ServerMessages.ExceptionMessage;
 import myproject.Model.Message.Client2ServerMessages.FillClientInfoMessage;
 import myproject.Model.Message.CommonMessages.StopClientMessage;
 import myproject.View.Common.UniversalMainFrame;
@@ -121,11 +122,15 @@ public class Client2Server{
             model.removeNode(node);
             model.reload();
             if(listener!=null){
-                listener.onDeleteChilds(new ActionEvent(this, 0, "remove child"));
+                if(node.getValue().isDirectory()){
+                    listener.onDeleteDirectoryChild(new ActionEvent(this, 0, "remove child directory"));
+                }else{
+                     listener.onDeleteFileChild(new ActionEvent(this, 0, "remove child file"));
+                }
             }
         }
         
-        public void DeleteFileMessage(String ex, String cause){
+        public void showException(String ex, String cause){
             UniversalMainFrame.main.showErrorDialog(clientHostName+": "+ex +" cause: "+cause);
         }
         

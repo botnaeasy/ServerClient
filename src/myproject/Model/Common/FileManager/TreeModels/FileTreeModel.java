@@ -40,12 +40,10 @@ public class FileTreeModel extends DefaultTreeModel{
              return null;
           }
          
-        public void removeNode(FileTreeNode node){
-                
+        public void removeNode(FileTreeNode node){     
                 FileTreeNode proper = getProperNode((FileTreeNode) this.getRoot(), node);
                 if(proper!=null){
                     this.removeNodeFromParent((MutableTreeNode) proper);
-                    //((FileTreeNode)nodes[nodes.length-1]).removeFromParent();
                 }
         }
 }

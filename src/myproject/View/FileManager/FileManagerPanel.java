@@ -72,8 +72,15 @@ public class FileManagerPanel extends javax.swing.JPanel {
             }
 
             @Override
-            public void onDeleteChilds(ActionEvent e) {
+            public void onDeleteDirectoryChild(ActionEvent e) {
                 lastpath = lastpath.getParentPath();
+                tree.expandPath(lastpath);
+                tree.setSelectionPath(lastpath);
+                loadModel();
+            }
+
+            @Override
+            public void onDeleteFileChild(ActionEvent e) {
                 tree.expandPath(lastpath);
                 tree.setSelectionPath(lastpath);
                 loadModel();

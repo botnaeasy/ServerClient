@@ -215,7 +215,7 @@ public class FileTreeNode implements MutableTreeNode, Serializable{
 
     @Override
     public void remove(int i) {
-        if(childs.size()>i&&i>0){
+        if(childs.size()>i&&i>=0){
             childs.remove(i);
         }
     }

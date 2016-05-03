@@ -18,6 +18,7 @@ import myproject.Model.Logger.Log;
 import myproject.Model.Message.AbstractMessage;
 import myproject.Model.Message.CommonMessages.CreateDirectoryMessage;
 import myproject.Model.Message.CommonMessages.DeleteDirectoryMessage;
+import myproject.Model.Message.CommonMessages.DeleteFileMessage;
 import myproject.Model.Message.CommonMessages.RequestCatalogInfoMessage;
 import myproject.Model.Message.CommonMessages.RequestDiscInfoMessage;
 import myproject.Model.Message.CommonMessages.RequestFileSendMessage;
@@ -119,7 +120,12 @@ public class Client2ServerFileManager<T extends Client2Server> {
     }
     
      public void removeFile(FileTreeNode node) {
-         
+         try{
+            AbstractMessage message = new DeleteFileMessage(node);
+            c2s.sendMessage(message);
+         }catch(Exception   ex){
+              ex.printStackTrace();
+         }
      }
 
     public void removeDirectory(FileTreeNode node) {

@@ -5,7 +5,6 @@
  */
 package myproject.Model.Message.CommonMessages;
 
-import java.io.IOException;
 import myproject.Model.Client.AbstractClient;
 import myproject.Model.Common.FileManager.TreeModels.FileTreeNode;
 import myproject.Model.Message.AbstractMessage;
@@ -17,29 +16,29 @@ import org.apache.commons.io.FileUtils;
  *
  * @author BotNaEasyEnv
  */
-public class DeleteDirectoryMessage  extends AbstractMessage{
+public class DeleteFileMessage extends AbstractMessage {
 
     private FileTreeNode node;
-    public DeleteDirectoryMessage(FileTreeNode node){
-        super("Delete Directory Message");
+    public DeleteFileMessage(FileTreeNode node){
+        super("DeleteFileMessage");
         this.node = node;
     }
     
     @Override
     public void executeMessage(AbstractClient client) throws Throwable {
-        try{
-            FileUtils.deleteDirectory(node.getValue());
+        if(FileUtils.deleteQuietly(node.getValue())){
             Object[][] args = new Object[][]{
                 {node}
             };
             AbstractMessage message = new FillDeletedFilesInfoMessage(args);
             client.sendMessage(message);
-        }catch(IOException e){
+        }else{
             Object[][] args = new Object[][]{
-                {e.getMessage(), e.getCause()}
+                {"Can't delete", "Problem occured while removing file"+node.getValue().getName()}
             };
-            AbstractMessage message = new ExceptionMessage("DeleteDirectoryMessage", args);
+            AbstractMessage message = new ExceptionMessage("DeleteFileMessage", args);
             client.sendMessage(message);
         }
     }
+    
 }
