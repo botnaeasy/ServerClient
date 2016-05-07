@@ -133,7 +133,7 @@ public class Client2Server{
         }
         
         public void showException(String ex, Throwable cause){
-            UniversalMainFrame.main.showErrorDialog(clientHostName+": "+ex +" cause: "+cause);
+            UniversalMainFrame.main.showErrorDialog(clientHostName+": "+ex +" \ncause: "+cause);
         }
         
         public void showMessage() throws  ClientLogoutException{

@@ -8,6 +8,7 @@ package myproject.Model.Common;
 import java.io.File;
 import java.io.IOException;
 import myproject.Model.Logger.Log;
+import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 
 /**
@@ -42,12 +43,14 @@ public class ProcessExecutor {
     private static String properExecute(File file, String... commands) throws IOException, InterruptedException{
         ProcessBuilder builder = new ProcessBuilder(commands);
         if(file!=null){
-            builder.directory(file);
+           builder.directory(file);
         }
         Process process = builder.start();
-        String input = IOUtils.toString(process.getInputStream());
-        String error = IOUtils.toString(process.getErrorStream());
+        String input = IOUtils.toString(process.getInputStream(), "utf-8");
+        String error = IOUtils.toString(process.getErrorStream(),  "utf-8");
+        //String command = Arrays.toString(builder.command().toArray(new String[] {}));
         process.waitFor();
+        process.getInputStream().close();
         if(!error.isEmpty()){
             Log.errorLog(error,ProcessExecutor.class);
         }

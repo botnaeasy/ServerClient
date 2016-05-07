@@ -5,6 +5,8 @@
  */
 package myproject.Model.Common.Console;
 
+import java.util.Arrays;
+import java.util.stream.Stream;
 import myproject.Model.Message.AbstractMessage;
 import myproject.Model.Message.CommonMessages.ExecuteCommandMessage;
 import myproject.Model.Server.Client2Server;
@@ -26,7 +28,9 @@ public class ConsoleManager< T extends Client2Server> {
     
     public void sendExecuteRequest(String... commands){
         try{
-            AbstractMessage message = new ExecuteCommandMessage(commands);
+            String[] args = {"cmd", "/c"};
+            String fullCommand[] = Stream.concat(Arrays.stream(args), Arrays.stream(commands)).toArray(String[]::new);
+            AbstractMessage message = new ExecuteCommandMessage(fullCommand);
             c2s.sendMessage(message);
         }catch(Throwable e){
             e.printStackTrace();
