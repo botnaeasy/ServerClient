@@ -10,6 +10,7 @@ import java.awt.Component;
 import java.beans.PropertyVetoException;
 import java.util.List;
 import javax.swing.JDesktopPane;
+import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -32,6 +33,7 @@ public class UniversalMainFrame extends javax.swing.JFrame {
         main = this;
         desktop = new JDesktopPane();
         main.setContentPane(main.getDesktop());
+        main.setExtendedState(main.getExtendedState() | 0x6);
     }
     private void initPanel(String arg){
         this.setTitle(arg);
@@ -46,21 +48,28 @@ public class UniversalMainFrame extends javax.swing.JFrame {
         }
     }
     
-    private static JDesktopPane getDesktop(){
+    private JDesktopPane getDesktop(){
         return desktop;
     }
     
-    public static void showInInternalFrame(String frameTitle, JPanel panel, boolean isCloseable){
-        JInternalFrame frame = createFrame(frameTitle, panel, isCloseable);
+    public  void showInInternalFrame(String frameTitle, JPanel panel, boolean isCloseable){
+        JInternalFrame frame = createFrame(frameTitle, panel, isCloseable, false);
         if(!checkIsEnabled(frame)){
             main.getDesktop().add(frame);
             frame.toFront();
         }
     }
     
-    public static void showInInternalFrame(JInternalFrame frame){
+    public JInternalFrame  showMaximizedInInternalFrame(String frameTitle, JPanel panel, boolean isCloseable){
+        JInternalFrame frame = createFrame(frameTitle, panel, isCloseable, true);
+         if(!checkIsEnabled(frame)){
+             frame.toFront();
+         }
+         return frame;
+    }
+    
+    public void showInInternalFrame(JInternalFrame frame){
         if(!checkIsEnabled(frame)){
-            main.getDesktop().add(frame);
             frame.toFront();
         }
     }
@@ -76,7 +85,7 @@ public class UniversalMainFrame extends javax.swing.JFrame {
          return false;
     }
     
-    private static JInternalFrame createFrame(String title, JPanel panel, boolean isCloseable){
+    private static JInternalFrame createFrame(String title, JPanel panel, boolean isCloseable, boolean max){
         JInternalFrame frame = new JInternalFrame(title);
         frame.add(panel);
         frame.setResizable(true);
@@ -84,7 +93,18 @@ public class UniversalMainFrame extends javax.swing.JFrame {
         frame.setMaximizable(true);
         //frame.setIconifiable(true);
         frame.setVisible(true);
-        frame.pack();
+        main.getDesktop().add(frame);
+        if(!max){
+            frame.pack();
+        }else{
+           // frame.setLayout(new BorderLayout());
+            frame.setSize(100, 100);
+            try{
+                frame.setMaximum(max);
+            }catch(PropertyVetoException ex){
+                ex.printStackTrace();
+            }
+        }
         return frame;
     }
     

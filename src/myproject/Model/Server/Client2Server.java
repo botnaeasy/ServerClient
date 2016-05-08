@@ -6,7 +6,6 @@
 package myproject.Model.Server;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -16,12 +15,14 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Random;
+import javax.swing.ImageIcon;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import myproject.Model.Common.FileManager.TreeModels.FileTreeModel;
 import myproject.Model.Common.FileManager.TreeModels.FileTreeNode;
 import myproject.Model.Common.Listeners.ClientConsoleManagerListener;
 import myproject.Model.Common.Listeners.ClientFileManagerListener;
+import myproject.Model.Common.Listeners.ClientRemoteDesktopListener;
 import myproject.Model.Common.ToolObject;
 import myproject.Model.Exception.ClientLogoutException;
 import myproject.Model.Message.AbstractMessage;
@@ -60,6 +61,7 @@ public class Client2Server{
         
         private ClientFileManagerListener Filelistener;
         private ClientConsoleManagerListener Consolelistener;
+        private ClientRemoteDesktopListener remoteDesktopListener;
      
         public Client2Server(Socket socket) throws IOException{
             this(socket, new Random().nextInt());
@@ -89,6 +91,7 @@ public class Client2Server{
         public void sendMessage(AbstractMessage mes) throws IOException{
             outMessage.writeObject(mes);
             outMessage.flush();
+            outMessage.reset();
         }
         
         public void addRootChilds(File[] files){
@@ -139,7 +142,7 @@ public class Client2Server{
         public void showMessage() throws  ClientLogoutException{
             try{
                 AbstractMessage message = (AbstractMessage) inMessage.readObject();
-                System.out.println("Serwer odebrał ("+getClientID()+"): "+ message.toString());
+                //System.out.println("Serwer odebrał ("+getClientID()+"): "+ message.toString());
                 checkClient2ServerMessage(message);
                 if(message instanceof FillClientInfoMessage) {
                         panelMethod(message);
@@ -260,6 +263,16 @@ public class Client2Server{
     public void commandAnswer(String response){
         if(Consolelistener!=null){
             Consolelistener.onGetAnswer(new ActionEvent(this, 0, response));
+        }
+    }
+    
+    public void addClientRemoteDesktopListener(ClientRemoteDesktopListener listener){
+        this.remoteDesktopListener = listener;
+    }
+    
+    public void transferDesktopImage(ImageIcon icon){
+        if(remoteDesktopListener!=null){
+            remoteDesktopListener.onReceivedScreen(new ActionEvent(icon, 0, "client screen"));
         }
     }
 }

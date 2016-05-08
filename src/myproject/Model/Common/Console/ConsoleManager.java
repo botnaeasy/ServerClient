@@ -14,6 +14,7 @@ import myproject.Model.Server.Client2Server;
 /**
  *
  * @author BotNaEasyEnv
+ * @param <T>
  */
 public class ConsoleManager< T extends Client2Server> {
     private T c2s;

@@ -186,6 +186,7 @@ public abstract class AbstractClient implements Serializable {
         try {
             outMessage.writeObject(mes);
             outMessage.flush();
+            outMessage.reset();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -222,6 +223,9 @@ public abstract class AbstractClient implements Serializable {
      
     protected abstract void startSending();
     protected abstract void startRecepting();
+    
+    public abstract void startSendingDesktop();
+    public abstract void stopSendingDesktop();
 
     public boolean isIsConnected() {
         return isConnected;

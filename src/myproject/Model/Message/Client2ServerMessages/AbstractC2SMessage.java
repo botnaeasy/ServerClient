@@ -5,7 +5,6 @@
  */
 package myproject.Model.Message.Client2ServerMessages;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import myproject.Model.Client.AbstractClient;
 import myproject.Model.Logger.Log;

@@ -6,6 +6,7 @@
 package myproject.Model.Client;
 
 import java.io.IOException;
+import myproject.Model.Common.RemoteDesktop.SendingDesktopThread;
 import myproject.Model.Exception.ServerLogoutException;
 import myproject.Model.Logger.Log;
 import myproject.Model.Message.AbstractMessage;
@@ -22,6 +23,8 @@ public class DuplexClient extends AbstractClient {
     private boolean isSendedInfo = false;
     
     private ClientPanel panel;
+  
+    private SendingDesktopThread remoteDesktop;
     
     public DuplexClient(ClientPanel panel){
         this();
@@ -139,5 +142,16 @@ public class DuplexClient extends AbstractClient {
     protected void reconnecting() {
         setIsReception(false);
         setIsSending(false);
+    }
+
+    @Override
+    public void startSendingDesktop() {
+        remoteDesktop = new SendingDesktopThread(this);
+        remoteDesktop.start();
+    }
+
+    @Override
+    public void stopSendingDesktop() {
+        remoteDesktop.stopRunning();
     }
 }

@@ -8,7 +8,6 @@ package myproject.Model.Common;
 import java.io.File;
 import java.io.IOException;
 import myproject.Model.Logger.Log;
-import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 
 /**
