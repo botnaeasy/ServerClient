@@ -5,6 +5,7 @@
  */
 package myproject.Model.Server;
 
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,6 +23,7 @@ import myproject.Model.Common.FileManager.TreeModels.FileTreeModel;
 import myproject.Model.Common.FileManager.TreeModels.FileTreeNode;
 import myproject.Model.Common.Listeners.ClientConsoleManagerListener;
 import myproject.Model.Common.Listeners.ClientFileManagerListener;
+import myproject.Model.Common.Listeners.ClientRemoteDesktopDimensionDataReceivedListener;
 import myproject.Model.Common.Listeners.ClientRemoteDesktopListener;
 import myproject.Model.Common.ToolObject;
 import myproject.Model.Exception.ClientLogoutException;
@@ -62,6 +64,7 @@ public class Client2Server{
         private ClientFileManagerListener Filelistener;
         private ClientConsoleManagerListener Consolelistener;
         private ClientRemoteDesktopListener remoteDesktopListener;
+        private ClientRemoteDesktopDimensionDataReceivedListener dimensionListener;
      
         public Client2Server(Socket socket) throws IOException{
             this(socket, new Random().nextInt());
@@ -88,7 +91,7 @@ public class Client2Server{
             socket.close();
         }
         
-        public void sendMessage(AbstractMessage mes) throws IOException{
+        public synchronized void sendMessage(AbstractMessage mes) throws IOException{
             outMessage.writeObject(mes);
             outMessage.flush();
             outMessage.reset();
@@ -273,6 +276,16 @@ public class Client2Server{
     public void transferDesktopImage(ImageIcon icon){
         if(remoteDesktopListener!=null){
             remoteDesktopListener.onReceivedScreen(new ActionEvent(icon, 0, "client screen"));
+        }
+    }
+    
+    public void addClientRemoteDesktopDimensionDataReceivedListener(ClientRemoteDesktopDimensionDataReceivedListener list){
+        this.dimensionListener = list;
+    }
+    
+    public void transferDimensionData(Rectangle rectangle){
+        if(dimensionListener!=null){
+            dimensionListener.dimensionDataReceived(new ActionEvent(rectangle, 0, "client dimension"));
         }
     }
 }

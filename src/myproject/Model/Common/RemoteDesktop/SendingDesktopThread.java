@@ -71,4 +71,11 @@ public class SendingDesktopThread extends Thread{
     public void stopRunning(){
         isRunning = false;
     }
+    
+    public Robot getRobot(){
+        if(robot != null){
+            return robot;
+        }
+        return null;
+    }
 }

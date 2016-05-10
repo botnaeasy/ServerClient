@@ -142,7 +142,7 @@ public class ServerPanel extends javax.swing.JPanel {
     private void remoteDesktopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remoteDesktopButtonActionPerformed
         Client2Server c2s = clientsTable.getSelectedObject();
         RemoteDesktopPanel panel = new RemoteDesktopPanel();
-        remoteDesktopManager = new RemoteDesktopManager(c2s, panel);
+        remoteDesktopManager = new RemoteDesktopManager(c2s, panel, true);
         JInternalFrame frame = UniversalMainFrame.main.showMaximizedInInternalFrame("Remote Desktop - "+c2s.getClientHostName(),panel , true);
         setRemoteDesktopListener(frame);
         remoteDesktopManager.startRemoteDesktop();

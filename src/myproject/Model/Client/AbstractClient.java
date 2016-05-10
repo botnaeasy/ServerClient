@@ -5,6 +5,7 @@
  */
 package myproject.Model.Client;
 
+import java.awt.Robot;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -84,6 +85,8 @@ public abstract class AbstractClient implements Serializable {
     private void setHostName() throws UnknownHostException{
             this.hostName = InetAddress.getLocalHost().getHostName();
     }
+    
+    public abstract Robot getRobot();
     
         private void setIP() throws UnknownHostException{
             this.clientIP = InetAddress.getLocalHost().getHostAddress();
@@ -182,7 +185,7 @@ public abstract class AbstractClient implements Serializable {
            logger.setIsLogging(false);
     }
     
-    public void sendMessage(AbstractMessage mes){
+    public synchronized void sendMessage(AbstractMessage mes){
         try {
             outMessage.writeObject(mes);
             outMessage.flush();

@@ -5,6 +5,7 @@
  */
 package myproject.Model.Client;
 
+import java.awt.Robot;
 import java.io.IOException;
 import myproject.Model.Common.RemoteDesktop.SendingDesktopThread;
 import myproject.Model.Exception.ServerLogoutException;
@@ -153,5 +154,13 @@ public class DuplexClient extends AbstractClient {
     @Override
     public void stopSendingDesktop() {
         remoteDesktop.stopRunning();
+    }
+
+    @Override
+    public Robot getRobot() {
+        if(remoteDesktop!=null){
+            return remoteDesktop.getRobot();
+        }
+        return null;
     }
 }

@@ -24,11 +24,19 @@ public class RemoteDesktopManager {
     
     private Client2Server c2s;
     private RemoteDesktopPanel panel;
+    private RemoteDesktopInputManager inputManager;
     
-    public RemoteDesktopManager(Client2Server c2s, RemoteDesktopPanel panel){
+    public RemoteDesktopManager(Client2Server c2s, RemoteDesktopPanel panel, boolean input){
         this.c2s = c2s;
         this.panel = panel;
         listener();
+        if(input){
+            initInput();
+        }
+    }
+    
+    private void initInput(){
+        inputManager = new RemoteDesktopInputManager(c2s, panel);
     }
     
     private void listener(){
