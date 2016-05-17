@@ -25,6 +25,7 @@ import myproject.Model.Common.Listeners.ClientConsoleManagerListener;
 import myproject.Model.Common.Listeners.ClientFileManagerListener;
 import myproject.Model.Common.Listeners.ClientRemoteDesktopDimensionDataReceivedListener;
 import myproject.Model.Common.Listeners.ClientRemoteDesktopListener;
+import myproject.Model.Common.Listeners.ClientWebcamListener;
 import myproject.Model.Common.ToolObject;
 import myproject.Model.Exception.ClientLogoutException;
 import myproject.Model.Message.AbstractMessage;
@@ -65,6 +66,7 @@ public class Client2Server{
         private ClientConsoleManagerListener Consolelistener;
         private ClientRemoteDesktopListener remoteDesktopListener;
         private ClientRemoteDesktopDimensionDataReceivedListener dimensionListener;
+        private ClientWebcamListener webcamListener;
      
         public Client2Server(Socket socket) throws IOException{
             this(socket, new Random().nextInt());
@@ -286,6 +288,16 @@ public class Client2Server{
     public void transferDimensionData(Rectangle rectangle){
         if(dimensionListener!=null){
             dimensionListener.dimensionDataReceived(new ActionEvent(rectangle, 0, "client dimension"));
+        }
+    }
+    
+    public void addClientWebcamListener(ClientWebcamListener listener){
+        this.webcamListener = listener;
+    }
+    
+    public void transferWebcamImage(ImageIcon icon){
+        if(webcamListener!=null){
+            webcamListener.onWebcamReceived(new ActionEvent(icon,0, "client webcam screen"));
         }
     }
 }

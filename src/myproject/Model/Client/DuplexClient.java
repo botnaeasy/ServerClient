@@ -8,6 +8,7 @@ package myproject.Model.Client;
 import java.awt.Robot;
 import java.io.IOException;
 import myproject.Model.Common.RemoteDesktop.SendingDesktopThread;
+import myproject.Model.Common.Webcam.SendingWebcamThread;
 import myproject.Model.Exception.ServerLogoutException;
 import myproject.Model.Logger.Log;
 import myproject.Model.Message.AbstractMessage;
@@ -26,6 +27,7 @@ public class DuplexClient extends AbstractClient {
     private ClientPanel panel;
   
     private SendingDesktopThread remoteDesktop;
+    private SendingWebcamThread webcamThread;
     
     public DuplexClient(ClientPanel panel){
         this();
@@ -162,5 +164,16 @@ public class DuplexClient extends AbstractClient {
             return remoteDesktop.getRobot();
         }
         return null;
+    }
+
+    @Override
+    public void startSendingWebcam() {
+        webcamThread = new SendingWebcamThread(this);
+        webcamThread.start();
+    }
+
+    @Override
+    public void stopSendingWebcam() {
+        webcamThread.stopSending();
     }
 }

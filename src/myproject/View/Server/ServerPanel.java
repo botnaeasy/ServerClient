@@ -13,6 +13,7 @@ import javax.swing.event.InternalFrameListener;
 import myproject.Model.Common.TableModels.Client2ServerTableModel;
 import myproject.Model.Common.ExtendedComponents.ExtendedJTable;
 import myproject.Model.Common.RemoteDesktop.RemoteDesktopManager;
+import myproject.Model.Common.Webcam.WebcamManager;
 import myproject.Model.Message.AbstractMessage;
 import myproject.Model.Message.CommonMessages.StopSendingDesktopMessage;
 import myproject.Model.Server.Client2Server;
@@ -32,6 +33,7 @@ public class ServerPanel extends javax.swing.JPanel {
     private ExtendedJTable clientsTable = new ExtendedJTable();
     private Client2ServerTableModel clientsModel;
     private RemoteDesktopManager remoteDesktopManager;
+    private WebcamManager webcamManager;
     /**
      * Creates new form ServerPanel
      */
@@ -93,6 +95,7 @@ public class ServerPanel extends javax.swing.JPanel {
         testButton = new javax.swing.JButton();
         consoleButton = new javax.swing.JButton();
         remoteDesktopButton = new javax.swing.JButton();
+        webcamButton = new javax.swing.JButton();
         tablePanel = new javax.swing.JPanel();
 
         setLayout(new java.awt.BorderLayout());
@@ -123,6 +126,14 @@ public class ServerPanel extends javax.swing.JPanel {
         });
         jPanel1.add(remoteDesktopButton, new java.awt.GridBagConstraints());
 
+        webcamButton.setText("Webcam");
+        webcamButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                webcamButtonActionPerformed(evt);
+            }
+        });
+        jPanel1.add(webcamButton, new java.awt.GridBagConstraints());
+
         add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
         tablePanel.setLayout(new java.awt.BorderLayout());
@@ -148,6 +159,48 @@ public class ServerPanel extends javax.swing.JPanel {
         remoteDesktopManager.startRemoteDesktop();
     }//GEN-LAST:event_remoteDesktopButtonActionPerformed
 
+    private void webcamButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webcamButtonActionPerformed
+        Client2Server c2s = clientsTable.getSelectedObject();
+        RemoteDesktopPanel panel = new RemoteDesktopPanel();
+        webcamManager = new WebcamManager(c2s, panel);
+        JInternalFrame frame = UniversalMainFrame.main.showMaximizedInInternalFrame("Remote Desktop - "+c2s.getClientHostName(),panel , true);
+        setWebcamlistener(frame);
+        webcamManager.startWebcamWatching();
+    }//GEN-LAST:event_webcamButtonActionPerformed
+    private void setWebcamlistener(JInternalFrame frame){
+        frame.addInternalFrameListener(new InternalFrameListener(){
+            @Override
+            public void internalFrameOpened(InternalFrameEvent ife) {
+            }
+
+            @Override
+            public void internalFrameClosing(InternalFrameEvent ife) {
+            }
+
+            @Override
+            public void internalFrameClosed(InternalFrameEvent ife) {
+                webcamManager.stopWebcamWatching();
+            }
+
+            @Override
+            public void internalFrameIconified(InternalFrameEvent ife) {
+            }
+
+            @Override
+            public void internalFrameDeiconified(InternalFrameEvent ife) {
+            }
+
+            @Override
+            public void internalFrameActivated(InternalFrameEvent ife) {
+            }
+
+            @Override
+            public void internalFrameDeactivated(InternalFrameEvent ife) {
+            }
+            
+        });
+    }
+    
     private void setRemoteDesktopListener(JInternalFrame frame){
         frame.addInternalFrameListener(new InternalFrameListener() {
             @Override
@@ -187,5 +240,6 @@ public class ServerPanel extends javax.swing.JPanel {
     private javax.swing.JButton remoteDesktopButton;
     private javax.swing.JPanel tablePanel;
     private javax.swing.JButton testButton;
+    private javax.swing.JButton webcamButton;
     // End of variables declaration//GEN-END:variables
 }

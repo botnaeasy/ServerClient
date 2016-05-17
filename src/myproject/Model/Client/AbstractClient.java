@@ -229,6 +229,9 @@ public abstract class AbstractClient implements Serializable {
     
     public abstract void startSendingDesktop();
     public abstract void stopSendingDesktop();
+    
+    public abstract void startSendingWebcam();
+    public abstract void stopSendingWebcam();
 
     public boolean isIsConnected() {
         return isConnected;
