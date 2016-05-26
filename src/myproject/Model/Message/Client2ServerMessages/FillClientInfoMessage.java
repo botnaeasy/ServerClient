@@ -25,7 +25,8 @@ public class FillClientInfoMessage extends AbstractC2SMessage{
             "setClientOS",
             "setClientLanguage",
             "setJavaVersion",
-            "setClientArchitecture"
+            "setClientArchitecture",
+            "clientConnected"
         };
     }
 
@@ -38,7 +39,8 @@ public class FillClientInfoMessage extends AbstractC2SMessage{
             {String.class},
             {String.class},
             {String.class},
-            {String.class}
+            {String.class},
+            {}
         };
     }
     

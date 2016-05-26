@@ -12,9 +12,12 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import myproject.Model.Client.AbstractClient;
 import myproject.Model.Logger.Log;
+import myproject.Model.Logger.Optimalizator;
 import myproject.Model.Message.AbstractMessage;
 import myproject.Model.Message.Client2ServerMessages.SendDesktopMessage;
 
@@ -36,18 +39,26 @@ public class SendingDesktopThread extends Thread{
     @Override
     public void run() {
         init();
+        //Optimalizator opt = new Optimalizator();
         while(isRunning){
             try{
+                //opt.setIndicator("Screen capture");
+                //opt.start();
                 BufferedImage image = robot.createScreenCapture(rectangle);
+                //ImageIO.write(image, "jpg", new File("D:\\screen.jpg"));
                 ImageIcon icon = new ImageIcon(image);
-                
+                //opt.stop();
+                //opt.showSecondResult();
+                //opt.setIndicator("Sending message");
+                //opt.start();
                 Object[][] args = new Object[][]{
                     {icon}  
                 };
                 
                 AbstractMessage message = new SendDesktopMessage(args);
                 client.sendMessage(message);
-                
+               // opt.stop();
+               // opt.showSecondResult();
                 Thread.sleep(100);
             }catch(Exception e){
                 Log.errorLog(e.getMessage(), e.getCause(), SendingDesktopThread.class);

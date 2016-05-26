@@ -5,6 +5,7 @@
  */
 package myproject.View.Server;
 
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import javax.swing.JInternalFrame;
 import javax.swing.JScrollPane;
@@ -12,6 +13,7 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 import myproject.Model.Common.TableModels.Client2ServerTableModel;
 import myproject.Model.Common.ExtendedComponents.ExtendedJTable;
+import myproject.Model.Common.Listeners.ClientConnectionListener;
 import myproject.Model.Common.RemoteDesktop.RemoteDesktopManager;
 import myproject.Model.Common.Webcam.WebcamManager;
 import myproject.Model.Message.AbstractMessage;
@@ -41,7 +43,22 @@ public class ServerPanel extends javax.swing.JPanel {
         initComponents();
         initServer();
         initialize();
+        listener();
         reload();
+    }
+    
+    private void listener(){
+        server.addClientConnectionListener(new ClientConnectionListener() {
+            @Override
+            public void clientConnected(ActionEvent e) {
+                update();
+            }
+
+            @Override
+            public void clientDisconnected(ActionEvent e) {
+                update();
+            }
+        });
     }
     
     private void initialize(){
@@ -55,7 +72,7 @@ public class ServerPanel extends javax.swing.JPanel {
     }
     
     
-    public void updateForMessage(String message){
+    public void update(){
         reload();
     }
     /*
@@ -75,7 +92,7 @@ public class ServerPanel extends javax.swing.JPanel {
     
     private void initServer(){
         try {
-            server = new MultiThreadServer(this);
+            server = new MultiThreadServer();
             server.connect();
         } catch (IOException ex) {
             ex.printStackTrace();

@@ -5,15 +5,17 @@
  */
 package myproject.Model.Server;
 
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import myproject.Model.Common.Listeners.ClientConnectionListener;
+import myproject.Model.Common.Listeners.ClientReadyListener;
 import myproject.Model.Logger.Log;
 import myproject.Model.Message.AbstractMessage;
 import myproject.Model.Message.CommonMessages.SetIdClientMessage;
 import myproject.Model.Message.CommonMessages.TextMessage;
-import myproject.View.Server.ServerPanel;
 
 /**
  *
@@ -23,20 +25,14 @@ public class MultiThreadServer extends DuplexServer {
     private List<Client2Server> connectedClients;
     private boolean isListening = true;
     private static int currentClientID = 0;
+    private ClientConnectionListener connectionListener;
     
-    ServerPanel panel;
     
     public MultiThreadServer(){
         super();
         connectedClients = new ArrayList<>();
     }
-    
-    public MultiThreadServer(ServerPanel panel){
-        super();
-        connectedClients = new ArrayList<>();
-        this.panel = panel;
-    }
-    
+     
     @Override
     protected void startListening() throws IOException {
         startMultiThreadListening();
@@ -51,7 +47,7 @@ public class MultiThreadServer extends DuplexServer {
                         try {
                             Socket clientSocket = serverSocket.accept();
                             Client2Server c2s = new Client2Server(clientSocket, currentClientID);
-                            c2s.setPanel(panel);
+                            setListeners(c2s);
                             connectedClients.add(c2s);
                             startReceptingCurrent(c2s);
                             startSendingCurrent(c2s);
@@ -67,6 +63,15 @@ public class MultiThreadServer extends DuplexServer {
             };
             t.setName("Listening thread");
             t.start();
+    }
+    
+    private void setListeners(Client2Server c2s){
+        c2s.addClientReadyListener(new ClientReadyListener() {
+            @Override
+            public void clientReady(ActionEvent e) {
+                clientConnected();
+            }
+        });
     }
     
     public void sendBroadcast(AbstractMessage mes) throws IOException{
@@ -142,7 +147,7 @@ public class MultiThreadServer extends DuplexServer {
     protected void clientLogout(Client2Server c2s) {
         try {
             close(c2s.getClientID(), true);
-            panel.updateForMessage("Client logaut");
+            clientDisconnected();
         } catch (IOException ex) {
             Log.errorLog(ex, ex.getCause(), MultiThreadServer.class);
         }
@@ -156,5 +161,21 @@ public class MultiThreadServer extends DuplexServer {
     @Override
     public void sendExeTo(AbstractMessage message, int position) throws IOException {
         sendTo(message, position);
+    }
+    
+    private void clientConnected(){
+        if(connectionListener!=null){
+            connectionListener.clientConnected(new ActionEvent(this, 0, "client connected"));
+        }
+    }
+    
+    public void addClientConnectionListener(ClientConnectionListener listener){
+        this.connectionListener = listener;
+    }
+    
+    public void clientDisconnected(){
+        if(connectionListener!=null){
+            connectionListener.clientDisconnected(new ActionEvent(this, 0, "client disconnected"));
+        }
     }
 }

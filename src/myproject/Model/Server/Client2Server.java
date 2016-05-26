@@ -21,8 +21,10 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import myproject.Model.Common.FileManager.TreeModels.FileTreeModel;
 import myproject.Model.Common.FileManager.TreeModels.FileTreeNode;
+import myproject.Model.Common.Listeners.ClientConnectionListener;
 import myproject.Model.Common.Listeners.ClientConsoleManagerListener;
 import myproject.Model.Common.Listeners.ClientFileManagerListener;
+import myproject.Model.Common.Listeners.ClientReadyListener;
 import myproject.Model.Common.Listeners.ClientRemoteDesktopDimensionDataReceivedListener;
 import myproject.Model.Common.Listeners.ClientRemoteDesktopListener;
 import myproject.Model.Common.Listeners.ClientWebcamListener;
@@ -60,8 +62,7 @@ public class Client2Server{
         
         private FileTreeModel model;
         
-        private ServerPanel panel; 
-        
+        private ClientReadyListener readyListener;
         private ClientFileManagerListener Filelistener;
         private ClientConsoleManagerListener Consolelistener;
         private ClientRemoteDesktopListener remoteDesktopListener;
@@ -72,9 +73,6 @@ public class Client2Server{
             this(socket, new Random().nextInt());
         }
         
-        public void setPanel(ServerPanel panel){
-            this.panel = panel;
-        }
         
         public Client2Server(Socket socket, int id) throws IOException{
             this.socket = socket;
@@ -147,11 +145,8 @@ public class Client2Server{
         public void showMessage() throws  ClientLogoutException{
             try{
                 AbstractMessage message = (AbstractMessage) inMessage.readObject();
-                //System.out.println("Serwer odebrał ("+getClientID()+"): "+ message.toString());
+                System.out.println("Serwer odebrał ("+getClientID()+"): "+ message.toString());
                 checkClient2ServerMessage(message);
-                if(message instanceof FillClientInfoMessage) {
-                        panelMethod(message);
-                }
             }catch(Exception e){
                 throw new ClientLogoutException();
             }
@@ -169,13 +164,6 @@ public class Client2Server{
 
         public int getClientID() {
             return clientID;
-        }
-
-        private void panelMethod(AbstractMessage message){
-            if(panel==null)
-                return;
-
-            panel.updateForMessage(message.toString());
         }
 
         public String getClientIP() {
@@ -298,6 +286,16 @@ public class Client2Server{
     public void transferWebcamImage(ImageIcon icon){
         if(webcamListener!=null){
             webcamListener.onWebcamReceived(new ActionEvent(icon,0, "client webcam screen"));
+        }
+    } 
+    
+    public void addClientReadyListener(ClientReadyListener listener){
+        this.readyListener = listener;
+    }
+    
+    public void clientConnected(){
+        if(readyListener!=null){
+            readyListener.clientReady(new ActionEvent(this, 0, "client ready"));
         }
     }
 }
