@@ -5,12 +5,9 @@
  */
 package myproject.View.Common;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.beans.PropertyVetoException;
-import java.util.List;
 import javax.swing.JDesktopPane;
-import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -63,6 +60,7 @@ public class UniversalMainFrame extends javax.swing.JFrame {
     public JInternalFrame  showMaximizedInInternalFrame(String frameTitle, JPanel panel, boolean isCloseable){
         JInternalFrame frame = createFrame(frameTitle, panel, isCloseable, true);
          if(!checkIsEnabled(frame)){
+             main.getDesktop().add(frame);
              frame.toFront();
          }
          return frame;
@@ -70,6 +68,7 @@ public class UniversalMainFrame extends javax.swing.JFrame {
     
     public void showInInternalFrame(JInternalFrame frame){
         if(!checkIsEnabled(frame)){
+            main.getDesktop().add(frame);
             frame.toFront();
         }
     }
