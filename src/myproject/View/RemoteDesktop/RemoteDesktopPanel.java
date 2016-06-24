@@ -7,6 +7,7 @@ package myproject.View.RemoteDesktop;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 
 /**
@@ -24,6 +25,16 @@ public class RemoteDesktopPanel extends javax.swing.JPanel {
     
     public void drawDesktop(ImageIcon imageIcon){
         Image image = imageIcon.getImage();
+        image = image.getScaledInstance(getWidth(), getHeight(), 2);
+       
+        Graphics graphics = getGraphics();
+        if(graphics!=null){
+            graphics.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
+    
+    public void drawDesktop(BufferedImage buff){
+        Image image = buff;
         image = image.getScaledInstance(getWidth(), getHeight(), 2);
        
         Graphics graphics = getGraphics();

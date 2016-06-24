@@ -12,6 +12,7 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -45,17 +46,22 @@ public class SendingDesktopThread extends Thread{
                 //opt.setIndicator("Screen capture");
                 //opt.start();
                 BufferedImage image = robot.createScreenCapture(rectangle);
+                
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ImageIO.write(image, "jpg", baos);
+                byte[] array = baos.toByteArray();
                 //ImageIO.write(image, "jpg", new File("D:\\screen.jpg"));
-                ImageIcon icon = new ImageIcon(image);
+                //ImageIcon icon = new ImageIcon(image);
                 //opt.stop();
                 //opt.showSecondResult();
                 //opt.setIndicator("Sending message");
                 //opt.start();
                 Object[][] args = new Object[][]{
-                    {icon}  
+                    //{icon} 
+                    {array}
                 };
                 
-                AbstractMessage message = new SendDesktopMessage(args);
+                AbstractMessage message = new SendDesktopMessage(args, 1);
                 client.sendMessage(message);
                // opt.stop();
                // opt.showSecondResult();

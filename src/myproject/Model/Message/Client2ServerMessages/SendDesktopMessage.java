@@ -13,8 +13,10 @@ import javax.swing.ImageIcon;
  */
 public class SendDesktopMessage extends AbstractC2SMessage{
 
-    public SendDesktopMessage(Object[][] args) {
+    private int type;
+    public SendDesktopMessage(Object[][] args, int type) {
         super("SendDesktopMessage", args);
+        this.type = type;
     }
 
     @Override
@@ -26,8 +28,14 @@ public class SendDesktopMessage extends AbstractC2SMessage{
 
     @Override
     public Class[][] setClassArguments() {
-        return new Class[][]{
-            {ImageIcon.class}
-        };
+        if(type==0){
+            return new Class[][]{
+                {ImageIcon.class}
+            };
+        }else{
+            return new Class[][]{
+                {byte[].class}
+            };
+        }
     }  
 }

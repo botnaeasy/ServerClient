@@ -268,6 +268,11 @@ public class Client2Server{
             remoteDesktopListener.onReceivedScreen(new ActionEvent(icon, 0, "client screen"));
         }
     }
+    public void transferDesktopImage(byte[] array){
+        if(remoteDesktopListener!=null){
+            remoteDesktopListener.onReceivedScreen(new ActionEvent(array, 0, "client screen"));
+        }
+    }
     
     public void addClientRemoteDesktopDimensionDataReceivedListener(ClientRemoteDesktopDimensionDataReceivedListener list){
         this.dimensionListener = list;

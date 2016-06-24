@@ -6,7 +6,11 @@
 package myproject.Model.Common.RemoteDesktop;
 
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import myproject.Model.Common.Listeners.ClientRemoteDesktopListener;
 import myproject.Model.Logger.Log;
@@ -43,7 +47,17 @@ public class RemoteDesktopManager {
         c2s.addClientRemoteDesktopListener(new ClientRemoteDesktopListener() {
             @Override
             public void onReceivedScreen(ActionEvent e) {
-                  panel.drawDesktop((ImageIcon) e.getSource());
+                  if(e.getSource() instanceof ImageIcon){
+                    panel.drawDesktop((ImageIcon) e.getSource());
+                  }else{
+                      InputStream in = new ByteArrayInputStream((byte[]) e.getSource());
+                      try {
+                          BufferedImage image = ImageIO.read(in);
+                          panel.drawDesktop(image);
+                      } catch (IOException ex) {
+                          ex.printStackTrace();
+                      }
+                  }
             }
         });
     }
