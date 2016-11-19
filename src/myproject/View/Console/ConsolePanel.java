@@ -6,6 +6,10 @@
 package myproject.View.Console;
 
 import java.awt.event.ActionEvent;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
 import myproject.Model.Common.Console.ConsoleManager;
 import myproject.Model.Common.Listeners.ClientConsoleManagerListener;
 import myproject.Model.Server.Client2Server;
@@ -25,6 +29,21 @@ public class ConsolePanel extends javax.swing.JPanel {
         initComponents();
         manager = new ConsoleManager(c2s);
         listener();
+        hotKeys();
+    }
+    
+    private void hotKeys(){
+            Action action = new AbstractAction("Execute") {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                executeButton.doClick();
+            }   
+        };
+        action.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("ENTER"));
+        getActionMap().put("ExecuteAction", action);
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+        (KeyStroke) action.getValue(Action.ACCELERATOR_KEY), "ExecuteAction");
     }
     
     private void listener(){
@@ -55,7 +74,7 @@ public class ConsolePanel extends javax.swing.JPanel {
     private void clear(){
         chatTA.setText("");
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

@@ -21,6 +21,7 @@ public class RemoteDesktopPanel extends javax.swing.JPanel {
      */
     public RemoteDesktopPanel() {
         initComponents();
+        setFocusable(true);
     }
     
     public void drawDesktop(ImageIcon imageIcon){
