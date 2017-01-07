@@ -132,6 +132,7 @@ public class ClientPanel extends javax.swing.JPanel {
     private void connectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectButtonActionPerformed
         client.setServer(ipTF.getText());
         client.tryToConnect();
+        connectButton.setEnabled(false);
     }//GEN-LAST:event_connectButtonActionPerformed
 
     

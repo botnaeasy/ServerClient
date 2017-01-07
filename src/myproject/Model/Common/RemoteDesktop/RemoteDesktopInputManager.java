@@ -12,6 +12,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.io.IOException;
 import myproject.Model.Common.Listeners.ClientRemoteDesktopDimensionDataReceivedListener;
 import myproject.Model.Logger.Log;
@@ -22,6 +24,7 @@ import myproject.Model.Message.CommonMessages.KeyReleasedMessage;
 import myproject.Model.Message.CommonMessages.MouseMoveMessage;
 import myproject.Model.Message.CommonMessages.MousePressedMessage;
 import myproject.Model.Message.CommonMessages.MouseReleasedMessage;
+import myproject.Model.Message.CommonMessages.MouseWheelMessage;
 import myproject.Model.Server.Client2Server;
 import myproject.View.RemoteDesktop.RemoteDesktopPanel;
 
@@ -29,7 +32,7 @@ import myproject.View.RemoteDesktop.RemoteDesktopPanel;
  *
  * @author BotNaEasyEnv
  */
-public class RemoteDesktopInputManager implements KeyListener, MouseMotionListener, MouseListener{
+public class RemoteDesktopInputManager implements KeyListener, MouseMotionListener, MouseListener, MouseWheelListener{
     private double scaleX;
     private double scaleY;
     
@@ -56,6 +59,7 @@ public class RemoteDesktopInputManager implements KeyListener, MouseMotionListen
         panel.addKeyListener(this);
         panel.addMouseListener(this);
         panel.addMouseMotionListener(this);
+        panel.addMouseWheelListener(this);
     }
     
     private void sendDimensionDataRequest(){
@@ -163,6 +167,16 @@ public class RemoteDesktopInputManager implements KeyListener, MouseMotionListen
     private void keyPressedMessage(int key){
         try{
             AbstractMessage message = new KeyPressedMessage(key);
+            c2s.sendMessage(message);
+        }catch(IOException e){
+            Log.errorLog(e.getMessage(), e.getCause(), RemoteDesktopInputManager.class);
+        }
+    }
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent mwe) {
+        try{
+            AbstractMessage message = new MouseWheelMessage(mwe.getScrollAmount());
             c2s.sendMessage(message);
         }catch(IOException e){
             Log.errorLog(e.getMessage(), e.getCause(), RemoteDesktopInputManager.class);
